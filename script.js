@@ -103,36 +103,36 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   
   // Form submission handler
-  const contactForm = document.getElementById('contactForm');
-  if (contactForm) {
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
     contactForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Coletar dados do formulário
-      const formData = new FormData(this);
-      const formValues = Object.fromEntries(formData);
-      
-      // Validação simples
-      if (!formValues.name || !formValues.email) {
-        alert('Por favor, preencha pelo menos o nome e email.');
-        return;
-      }
-      
-      // Simular envio (em produção, enviaria para um servidor)
-      const submitBtn = this.querySelector('button[type="submit"]');
-      const originalText = submitBtn.innerHTML;
-      
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
-      submitBtn.disabled = true;
-      
-      setTimeout(() => {
-        alert('Obrigado pelo seu interesse no CESE-UJC! Entraremos em contacto em breve.');
-        contactForm.reset();
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-      }, 1500);
+        e.preventDefault();
+        
+        // Coletar dados do formulário
+        const formData = new FormData(this);
+        const formValues = Object.fromEntries(formData);
+        
+        // Validação simples
+        if (!formValues.name || !formValues.email) {
+            alert('Por favor, preencha pelo menos o nome e email.');
+            return;
+        }
+        
+        // Simular envio (em produção, enviaria para um servidor)
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+        submitBtn.disabled = true;
+        
+        setTimeout(() => {
+            alert('Obrigado pelo seu interesse no CESE-UJC! Entraremos em contacto em breve.');
+            contactForm.reset();
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }, 1500);
     });
-  }
+}
   
   // Adicionar ano atual ao footer
   const currentYear = new Date().getFullYear();
