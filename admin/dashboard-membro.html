@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👤 Meu Perfil - CESE-UJC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #1a3a8f;
+            --primary-dark: #0d2a6d;
+            --secondary: #3498db;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --border: #e1e5eb;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: #333;
+        }
+        
+        /* Header */
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .logo-text h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .logo-text p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .user-info {
+            text-align: right;
+        }
+        
+        .user-info h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .user-role {
+            background: var(--secondary);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .logout-btn {
+            background: var(--light);
+            color: var(--danger);
+            border: 1px solid var(--border);
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .logout-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+        
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(26, 58, 143, 0.3);
+        }
+        
+        .welcome-banner h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .welcome-banner p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        /* Profile Card */
+        .profile-section {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .profile-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--secondary), #2980b9);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            border: 5px solid white;
+            box-shadow: 0 0 0 5px #f8f9fa;
+        }
+        
+        .profile-name {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .profile-role {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .profile-info {
+            text-align: left;
+            margin-top: 25px;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-item i {
+            width: 30px;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        
+        .info-item span {
+            flex: 1;
+            color: #666;
+        }
+        
+        .info-item strong {
+            color: var(--dark);
+        }
+        
+        .edit-profile-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            width: 100%;
+        }
+        
+        .edit-profile-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(26, 58, 143, 0.2);
+        }
+        
+        /* Dashboard Cards */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .dashboard-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .dashboard-card:hover {
+            border-color: var(--secondary);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--secondary);
+            font-size: 1.5rem;
+        }
+        
+        .card-header h3 {
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+        
+        .card-content h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .card-content p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        /* Quotas Status */
+        .quotas-status {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .quotas-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .quota-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .quota-item.paid { border-color: var(--success); }
+        .quota-item.pending { border-color: var(--warning); }
+        .quota-item.overdue { border-color: var(--danger); }
+        
+        .quota-month {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .quota-status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .status-paid {
+            background: rgba(46, 204, 113, 0.1);
+            color: var(--success);
+        }
+        
+        .status-pending {
+            background: rgba(243, 156, 18, 0.1);
+            color: var(--warning);
+        }
+        
+        .status-overdue {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--danger);
+        }
+        
+        .quota-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .pay-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        .pay-btn:hover {
+            background: #2980b9;
+        }
+        
+        /* Upcoming Events */
+        .events-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .events-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .event-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .event-date {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+        
+        .event-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .event-desc {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .event-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-small {
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: rgba(26, 58, 143, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">👤</div>
+            <div class="logo-text">
+                <h2>CESE-UJC</h2>
+                <p>Área do Membro</p>
+            </div>
+        </div>
+        
+        <div class="user-menu">
+            <div class="user-info">
+                <h3 id="userName">Membro CESE</h3>
+                <span class="user-role" id="userRole">MEMBRO</span>
+            </div>
+            <a href="index.html" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                Sair
+            </a>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+            <h1 id="welcomeMessage">Bem-vindo(a) de volta!</h1>
+            <p id="currentDate">Carregando data...</p>
+        </div>
+        
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <!-- Profile Card -->
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h2 class="profile-name" id="profileName">Membro CESE</h2>
+                <p class="profile-role" id="profileRole">Membro Participante</p>
+                
+                <div class="profile-info">
+                    <div class="info-item">
+                        <i class="fas fa-id-card"></i>
+                        <span><strong>ID:</strong> <span id="profileId">CESE-2026-001</span></span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span><strong>Membro desde:</strong> <span id="memberSince">Jan 2026</span></span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span><strong>Curso:</strong> <span id="profileCourse">Economia</span></span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <span><strong>Contacto:</strong> <span id="profilePhone">84 XXX XXXX</span></span>
+                    </div>
+                </div>
+                
+                <button class="edit-profile-btn" onclick="editarPerfil()">
+                    <i class="fas fa-edit"></i> Editar Perfil
+                </button>
+            </div>
+            
+            <!-- Status Cards -->
+            <div class="dashboard-cards">
+                <div class="dashboard-card" onclick="verMinhasQuotas()">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <h3>Status de Quotas</h3>
+                    </div>
+                    <div class="card-content">
+                        <h2 id="quotaStatus">Em Dia</h2>
+                        <p>Suas quotas estão regularizadas até Janeiro 2026</p>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card" onclick="verMeusEventos()">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <h3>Próximos Eventos</h3>
+                    </div>
+                    <div class="card-content">
+                        <h2 id="upcomingEvents">3</h2>
+                        <p>Eventos agendados para este mês</p>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card" onclick="verMinhasAtividades()">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Minha Participação</h3>
+                    </div>
+                    <div class="card-content">
+                        <h2 id="participationRate">85%</h2>
+                        <p>Taxa de participação nos últimos eventos</p>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card" onclick="verCertificados()">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <h3>Certificados</h3>
+                    </div>
+                    <div class="card-content">
+                        <h2 id="certificatesCount">2</h2>
+                        <p>Certificados obtidos no CESE-UJC</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quotas Status -->
+        <div class="quotas-status">
+            <h2 class="section-title">
+                <i class="fas fa-money-check-alt"></i>
+                Minhas Quotas
+            </h2>
+            <div class="quotas-list" id="quotasList">
+                <!-- Quotas serão carregadas via JS -->
+            </div>
+        </div>
+        
+        <!-- Upcoming Events -->
+        <div class="events-section">
+            <h2 class="section-title">
+                <i class="fas fa-calendar-alt"></i>
+                Próximos Eventos
+            </h2>
+            <div class="events-list" id="eventsList">
+                <!-- Eventos serão carregadas via JS -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Verificar se está logado como membro
+        function verificarLogin() {
+            const sessao = localStorage.getItem('cese_sessao');
+            if (!sessao) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            const usuario = JSON.parse(sessao);
+            if (usuario.nivel !== 'membro') {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            return usuario;
+        }
+        
+        // Carregar dados do perfil
+        function carregarPerfil() {
+            const usuario = verificarLogin();
+            if (!usuario) return;
+            
+            // Atualizar data e saudação
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('pt-MZ', options);
+            
+            // Saudação baseada na hora
+            const hora = now.getHours();
+            let saudacao = 'Boa noite';
+            if (hora < 12) saudacao = 'Bom dia';
+            else if (hora < 18) saudacao = 'Boa tarde';
+            
+            document.getElementById('welcomeMessage').textContent = `${saudacao}, ${usuario.nome}!`;
+            
+            // Preencher informações do usuário
+            document.getElementById('userName').textContent = usuario.nome;
+            document.getElementById('userRole').textContent = usuario.cargo;
+            document.getElementById('profileName').textContent = usuario.nome;
+            document.getElementById('profileRole').textContent = usuario.cargo;
+            
+            // Carregar dados simulados
+            carregarDadosSimulados();
+        }
+        
+        // Dados simulados
+        function carregarDadosSimulados() {
+            // Preencher perfil
+            document.getElementById('profileId').textContent = 'CESE-2026-015';
+            document.getElementById('memberSince').textContent = 'Janeiro 2026';
+            document.getElementById('profileCourse').textContent = 'Economia';
+            document.getElementById('profilePhone').textContent = '84 123 4567';
+            
+            // Status
+            document.getElementById('quotaStatus').textContent = 'Em Dia';
+            document.getElementById('upcomingEvents').textContent = '3';
+            document.getElementById('participationRate').textContent = '85%';
+            document.getElementById('certificatesCount').textContent = '2';
+            
+            // Quotas
+            const quotas = [
+                { mes: 'Janeiro 2026', valor: '10 MT', status: 'paid' },
+                { mes: 'Fevereiro 2026', valor: '10 MT', status: 'paid' },
+                { mes: 'Março 2026', valor: '10 MT', status: 'pending' },
+                { mes: 'Abril 2026', valor: '10 MT', status: 'pending' }
+            ];
+            
+            const quotasList = document.getElementById('quotasList');
+            quotasList.innerHTML = '';
+            
+            quotas.forEach(quota => {
+                let statusClass = '';
+                let statusText = '';
+                
+                if (quota.status === 'paid') {
+                    statusClass = 'status-paid';
+                    statusText = 'Pago';
+                } else if (quota.status === 'pending') {
+                    statusClass = 'status-pending';
+                    statusText = 'Pendente';
+                } else {
+                    statusClass = 'status-overdue';
+                    statusText = 'Em Atraso';
+                }
+                
+                const quotaItem = document.createElement('div');
+                quotaItem.className = `quota-item ${quota.status}`;
+                quotaItem.innerHTML = `
+                    <div class="quota-month">${quota.mes}</div>
+                    <div class="quota-status ${statusClass}">${statusText}</div>
+                    <div class="quota-value">${quota.valor}</div>
+                    ${quota.status !== 'paid' ? 
+                        `<button class="pay-btn" onclick="pagarQuota('${quota.mes}')">
+                            <i class="fas fa-credit-card"></i> Pagar Agora
+                        </button>` 
+                        : ''
+                    }
+                `;
+                quotasList.appendChild(quotaItem);
+            });
+            
+            // Eventos
+            const eventos = [
+                { 
+                    data: '15 FEV 2026', 
+                    titulo: 'Debate: Economia Circular', 
+                    desc: 'Discussão sobre sustentabilidade e modelos económicos circulares',
+                    hora: '14:00 - 16:00'
+                },
+                { 
+                    data: '22 FEV 2026', 
+                    titulo: 'Workshop de Oratória', 
+                    desc: 'Técnicas de comunicação e apresentação em público',
+                    hora: '10:00 - 12:30'
+                },
+                { 
+                    data: '05 MAR 2026', 
+                    titulo: 'Visita a Banco de Moçambique', 
+                    desc: 'Visita técnica para conhecer operações do banco central',
+                    hora: '09:00 - 13:00'
+                }
+            ];
+            
+            const eventsList = document.getElementById('eventsList');
+            eventsList.innerHTML = '';
+            
+            eventos.forEach(evento => {
+                const eventCard = document.createElement('div');
+                eventCard.className = 'event-card';
+                eventCard.innerHTML = `
+                    <div class="event-date">${evento.data} • ${evento.hora}</div>
+                    <h3 class="event-title">${evento.titulo}</h3>
+                    <p class="event-desc">${evento.desc}</p>
+                    <div class="event-actions">
+                        <button class="btn-small btn-primary" onclick="inscreverEvento('${evento.titulo}')">
+                            <i class="fas fa-check"></i> Confirmar Presença
+                        </button>
+                        <button class="btn-small btn-outline" onclick="verDetalhesEvento('${evento.titulo}')">
+                            <i class="fas fa-info-circle"></i> Detalhes
+                        </button>
+                    </div>
+                `;
+                eventsList.appendChild(eventCard);
+            });
+        }
+        
+        // Funções das ações
+        function editarPerfil() {
+            alert('Funcionalidade: Editar Perfil\n\nEm desenvolvimento...');
+        }
+        
+        function verMinhasQuotas() {
+            alert('Funcionalidade: Ver Minhas Quotas\n\nEm desenvolvimento...');
+        }
+        
+        function verMeusEventos() {
+            alert('Funcionalidade: Ver Meus Eventos\n\nEm desenvolvimento...');
+        }
+        
+        function verMinhasAtividades() {
+            alert('Funcionalidade: Ver Minhas Atividades\n\nEm desenvolvimento...');
+        }
+        
+        function verCertificados() {
+            alert('Funcionalidade: Ver Meus Certificados\n\nEm desenvolvimento...');
+        }
+        
+        function pagarQuota(mes) {
+            alert(`Pagar quota: ${mes}\n\nEm desenvolvimento...`);
+        }
+        
+        function inscreverEvento(evento) {
+            alert(`Confirmar presença em: ${evento}\n\nEm desenvolvimento...`);
+        }
+        
+        function verDetalhesEvento(evento) {
+            alert(`Ver detalhes do evento: ${evento}\n\nEm desenvolvimento...`);
+        }
+        
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', carregarPerfil);
+    </script>
+</body>
+</html>
