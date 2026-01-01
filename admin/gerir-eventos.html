@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🗓️ Gerir Eventos - CESE-UJC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #1a3a8f;
+            --primary-dark: #0d2a6d;
+            --secondary: #d4af37;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --border: #e1e5eb;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 20px 0;
+            z-index: 1000;
+        }
+        
+        .logo {
+            text-align: center;
+            padding: 0 20px 30px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+        
+        .logo h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .user-info {
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .user-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .user-info .user-role {
+            background: var(--secondary);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0 15px;
+        }
+        
+        .nav-item {
+            margin-bottom: 5px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: #555;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: rgba(26, 58, 143, 0.1);
+            color: var(--primary);
+        }
+        
+        .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .logout-btn {
+            margin: 20px 15px 0;
+            display: block;
+            width: calc(100% - 30px);
+            text-align: center;
+            padding: 12px;
+            background: var(--light);
+            color: var(--danger);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+            min-height: 100vh;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .page-title h1 {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+        
+        .page-title p {
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 58, 143, 0.3);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+        }
+        
+        /* Calendar Header */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .calendar-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            min-width: 200px;
+            text-align: center;
+        }
+        
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .view-toggle {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .view-btn {
+            padding: 10px 20px;
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .view-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* Calendar Grid */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+        
+        .calendar-day-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .calendar-day {
+            background: white;
+            padding: 15px;
+            min-height: 120px;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .calendar-day:hover {
+            background: #f8f9fa;
+        }
+        
+        .day-number {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .day-events {
+            list-style: none;
+        }
+        
+        .day-event {
+            background: rgba(26, 58, 143, 0.1);
+            padding: 5px 8px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .day-event:hover {
+            background: rgba(26, 58, 143, 0.2);
+        }
+        
+        .day-event.debate { border-color: #3498db; background: rgba(52, 152, 219, 0.1); }
+        .day-event.workshop { border-color: #2ecc71; background: rgba(46, 204, 113, 0.1); }
+        .day-event.seminar { border-color: #9b59b6; background: rgba(155, 89, 182, 0.1); }
+        .day-event.meeting { border-color: #f39c12; background: rgba(243, 156, 18, 0.1); }
+        
+        /* Events List */
+        .events-list-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+        }
+        
+        .events-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .events-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #555;
+            border-bottom: 2px solid var(--border);
+            background: var(--light);
+        }
+        
+        .events-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .events-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .event-type {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .type-debate { background: rgba(52, 152, 219, 0.1); color: #2980b9; }
+        .type-workshop { background: rgba(46, 204, 113, 0.1); color: #27ae60; }
+        .type-seminar { background: rgba(155, 89, 182, 0.1); color: #8e44ad; }
+        .type-meeting { background: rgba(243, 156, 18, 0.1); color: #d35400; }
+        
+        .event-status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-planned { background: rgba(52, 152, 219, 0.1); color: #2980b9; }
+        .status-ongoing { background: rgba(46, 204, 113, 0.1); color: #27ae60; }
+        .status-completed { background: rgba(155, 89, 182, 0.1); color: #8e44ad; }
+        .status-cancelled { background: rgba(231, 76, 60, 0.1); color: #c0392b; }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: none;
+            background: var(--light);
+            color: #555;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Stats Cards */
+        .events-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .modal-header h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .close-modal:hover {
+            color: var(--danger);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 58, 143, 0.1);
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .calendar-grid {
+                grid-template-columns: repeat(7, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+            }
+            
+            .sidebar .logo h2,
+            .sidebar .logo p,
+            .sidebar .user-info h3,
+            .sidebar .user-info .user-role,
+            .sidebar .nav-link span,
+            .sidebar .logout-btn span {
+                display: none;
+            }
+            
+            .sidebar .logo,
+            .sidebar .user-info,
+            .sidebar .nav-link,
+            .sidebar .logout-btn {
+                text-align: center;
+                justify-content: center;
+                padding: 15px 5px;
+            }
+            
+            .sidebar .nav-link i {
+                margin-right: 0;
+                font-size: 1.2rem;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .calendar-grid {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            
+            .calendar-header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .events-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .events-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <h2>🗓️ CESE-UJC</h2>
+            <p>Gestão de Eventos</p>
+        </div>
+        
+        <div class="user-info">
+            <div class="user-avatar">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <h3 id="userName">Administrador</h3>
+            <span class="user-role" id="userRole">ADMIN</span>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard-admin.html" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="gerir-membros.html" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>Membros</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="gerir-financas.html" class="nav-link">
+                    <i class="fas fa-coins"></i>
+                    <span>Finanças</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="gerir-eventos.html" class="nav-link active">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Eventos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="relatorios.html" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Relatórios</span>
+                </a>
+            </li>
+        </ul>
+        
+        <a href="index.html" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Sair</span>
+        </a>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="page-header">
+            <div class="page-title">
+                <h1>🗓️ Gestão de Eventos</h1>
+                <p>Calendário e gestão de eventos do CESE-UJC</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="abrirModalNovoEvento()">
+                    <i class="fas fa-plus-circle"></i>
+                    Novo Evento
+                </button>
+                <button class="btn btn-success" onclick="exportarCalendario()">
+                    <i class="fas fa-download"></i>
+                    Exportar Calendário
+                </button>
+            </div>
+        </div>
+        
+        <!-- Events Stats -->
+        <div class="events-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-number" id="totalEventos">0</div>
+                <div class="stat-label">Eventos Este Mês</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-number" id="totalParticipantes">0</div>
+                <div class="stat-label">Total Participantes</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-number" id="taxaParticipacao">0%</div>
+                <div class="stat-label">Taxa de Participação</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-number" id="proximosEventos">0</div>
+                <div class="stat-label">Próximos 7 Dias</div>
+            </div>
+        </div>
+        
+        <!-- Calendar Header -->
+        <div class="calendar-header">
+            <div class="calendar-nav">
+                <button class="nav-btn" onclick="mudarMes(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="calendar-title" id="currentMonth">Janeiro 2026</div>
+                <button class="nav-btn" onclick="mudarMes(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="btn" onclick="hoje()" style="background: var(--light);">
+                    <i class="fas fa-calendar-day"></i> Hoje
+                </button>
+            </div>
+            
+            <div class="view-toggle">
+                <button class="view-btn active" onclick="mudarVista('mes')">Mês</button>
+                <button class="view-btn" onclick="mudarVista('semana')">Semana</button>
+                <button class="view-btn" onclick="mudarVista('lista')">Lista</button>
+            </div>
+        </div>
+        
+        <!-- Calendar Grid -->
+        <div class="calendar-grid" id="calendarGrid">
+            <!-- Dias da semana -->
+            <div class="calendar-day-header">Dom</div>
+            <div class="calendar-day-header">Seg</div>
+            <div class="calendar-day-header">Ter</div>
+            <div class="calendar-day-header">Qua</div>
+            <div class="calendar-day-header">Qui</div>
+            <div class="calendar-day-header">Sex</div>
+            <div class="calendar-day-header">Sáb</div>
+            
+            <!-- Dias do mês serão gerados via JavaScript -->
+        </div>
+        
+        <!-- Events List -->
+        <div class="events-list-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-list"></i>
+                    Próximos Eventos
+                </h2>
+                <div class="section-actions">
+                    <button class="btn" onclick="filtrarEventos('todos')" style="background: var(--light);">
+                        Todos
+                    </button>
+                    <button class="btn" onclick="filtrarEventos('planeados')" style="background: var(--light);">
+                        Planeados
+                    </button>
+                    <button class="btn" onclick="filtrarEventos('hoje')" style="background: var(--light);">
+                        Hoje
+                    </button>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table class="events-table" id="eventsTable">
+                    <thead>
+                        <tr>
+                            <th>Evento</th>
+                            <th>Tipo</th>
+                            <th>Data & Hora</th>
+                            <th>Local</th>
+                            <th>Participantes</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="eventsTableBody">
+                        <!-- Eventos serão carregados via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Novo Evento -->
+    <div class="modal" id="eventModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Novo Evento</h2>
+                <button class="close-modal" onclick="fecharModal()">&times;</button>
+            </div>
+            
+            <form id="eventForm" onsubmit="salvarEvento(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventTitle">Título do Evento *</label>
+                        <input type="text" id="eventTitle" required placeholder="Ex: Debate sobre Economia Circular">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eventType">Tipo de Evento *</label>
+                        <select id="eventType" required>
+                            <option value="">Selecione o tipo</option>
+                            <option value="debate">Debate</option>
+                            <option value="workshop">Workshop</option>
+                            <option value="seminar">Seminário</option>
+                            <option value="meeting">Reunião</option>
+                            <option value="visita">Visita Técnica</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventDate">Data *</label>
+                        <input type="date" id="eventDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eventTime">Hora *</label>
+                        <input type="time" id="eventTime" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventDuration">Duração (horas)</label>
+                        <input type="number" id="eventDuration" min="0.5" max="8" step="0.5" value="2">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eventLocation">Local *</label>
+                        <input type="text" id="eventLocation" required placeholder="Ex: Auditório Principal UJC">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="eventDescription">Descrição *</label>
+                    <textarea id="eventDescription" rows="4" required placeholder="Descreva o evento..."></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventMaxParticipants">Máximo de Participantes</label>
+                        <input type="number" id="eventMaxParticipants" min="1" value="50">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eventStatus">Status</label>
+                        <select id="eventStatus">
+                            <option value="planned">Planeado</option>
+                            <option value="confirmed">Confirmado</option>
+                            <option value="cancelled">Cancelado</option>
+                            <option value="completed">Concluído</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="eventOrganizer">Organizador Responsável</label>
+                    <input type="text" id="eventOrganizer" value="CESE-UJC" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="eventNotes">Notas Adicionais</label>
+                    <textarea id="eventNotes" rows="2" placeholder="Informações adicionais..."></textarea>
+                </div>
+                
+                <input type="hidden" id="eventId">
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn" onclick="fecharModal()" style="background: #f8f9fa; color: #555;">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Salvar Evento
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Sistema de Eventos
+        const EVENTOS_KEY = 'cese_eventos';
+        let eventos = [];
+        let mesAtual = new Date().getMonth();
+        let anoAtual = new Date().getFullYear();
+        let eventoEditando = null;
+        
+        // Verificar login
+        function verificarLogin() {
+            const sessao = localStorage.getItem('cese_sessao');
+            if (!sessao) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            const usuario = JSON.parse(sessao);
+            if (usuario.nivel !== 'admin' && usuario.nivel !== 'cfo') {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            document.getElementById('userName').textContent = usuario.nome;
+            document.getElementById('userRole').textContent = usuario.cargo;
+            
+            return usuario;
+        }
+        
+        // Carregar dados
+        function carregarDados() {
+            verificarLogin();
+            
+            // Carregar eventos
+            const eventosSalvos = localStorage.getItem(EVENTOS_KEY);
+            if (eventosSalvos) {
+                eventos = JSON.parse(eventosSalvos);
+            } else {
+                // Eventos de exemplo
+                eventos = [
+                    {
+                        id: 1,
+                        title: "Debate: Economia Circular",
+                        type: "debate",
+                        date: "2026-02-15",
+                        time: "14:00",
+                        duration: 2,
+                        location: "Auditório Principal UJC",
+                        description: "Discussão sobre sustentabilidade e modelos económicos circulares",
+                        maxParticipants: 100,
+                        currentParticipants: 45,
+                        status: "planned",
+                        organizer: "CESE-UJC",
+                        notes: "Trazer materiais de apresentação"
+                    },
+                    {
+                        id: 2,
+                        title: "Workshop de Oratória",
+                        type: "workshop",
+                        date: "2026-02-22",
+                        time: "10:00",
+                        duration: 2.5,
+                        location: "Sala 302 - Faculdade de Economia",
+                        description: "Técnicas de comunicação e apresentação em público",
+                        maxParticipants: 30,
+                        currentParticipants: 25,
+                        status: "confirmed",
+                        organizer: "CESE-UJC",
+                        notes: "Inscrições abertas"
+                    },
+                    {
+                        id: 3,
+                        title: "Visita ao Banco de Moçambique",
+                        type: "visita",
+                        date: "2026-03-05",
+                        time: "09:00",
+                        duration: 4,
+                        location: "Banco de Moçambique - Maputo",
+                        description: "Visita técnica para conhecer operações do banco central",
+                        maxParticipants: 25,
+                        currentParticipants: 18,
+                        status: "planned",
+                        organizer: "CESE-UJC",
+                        notes: "Transporte providenciado"
+                    }
+                ];
+                salvarEventos();
+            }
+            
+            atualizarEstatisticas();
+            atualizarCalendario();
+            renderizarTabelaEventos();
+        }
+        
+        // Salvar eventos
+        function salvarEventos() {
+            localStorage.setItem(EVENTOS_KEY, JSON.stringify(eventos));
+        }
+        
+        // Atualizar estatísticas
+        function atualizarEstatisticas() {
+            const hoje = new Date();
+            const mesCorrente = hoje.getMonth();
+            const anoCorrente = hoje.getFullYear();
+            
+            // Eventos deste mês
+            const eventosMes = eventos.filter(e => {
+                const dataEvento = new Date(e.date);
+                return dataEvento.getMonth() === mesCorrente && 
+                       dataEvento.getFullYear() === anoCorrente;
+            });
+            
+            document.getElementById('totalEventos').textContent = eventosMes.length;
+            
+            // Total de participantes
+            const totalParticipantes = eventos.reduce((sum, e) => sum + (e.currentParticipants || 0), 0);
+            document.getElementById('totalParticipantes').textContent = totalParticipantes;
+            
+            // Taxa de participação (média)
+            const taxaMedia = eventos.length > 0 ? 
+                Math.round(eventos.reduce((sum, e) => {
+                    const taxa = e.maxParticipants > 0 ? (e.currentParticipants / e.maxParticipants) * 100 : 0;
+                    return sum + taxa;
+                }, 0) / eventos.length) : 0;
+            document.getElementById('taxaParticipacao').textContent = `${taxaMedia}%`;
+            
+            // Próximos 7 dias
+            const seteDias = new Date();
+            seteDias.setDate(seteDias.getDate() + 7);
+            const proximosEventos = eventos.filter(e => {
+                const dataEvento = new Date(e.date);
+                return dataEvento >= hoje && dataEvento <= seteDias;
+            });
+            document.getElementById('proximosEventos').textContent = proximosEventos.length;
+        }
+        
+        // Atualizar calendário
+        function atualizarCalendario() {
+            const meses = [
+                'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+            ];
+            
+            document.getElementById('currentMonth').textContent = `${meses[mesAtual]} ${anoAtual}`;
+            
+            // Gerar calendário
+            const primeiroDia = new Date(anoAtual, mesAtual, 1);
+            const ultimoDia = new Date(anoAtual, mesAtual + 1, 0);
+            const diasNoMes = ultimoDia.getDate();
+            const primeiroDiaSemana = primeiroDia.getDay();
+            
+            const calendarGrid = document.getElementById('calendarGrid');
+            
+            // Limpar dias existentes (mantendo os headers)
+            while (calendarGrid.children.length > 7) {
+                calendarGrid.removeChild(calendarGrid.lastChild);
+            }
+            
+            // Dias vazios no início
+            for (let i = 0; i < primeiroDiaSemana; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day empty';
+                calendarGrid.appendChild(emptyDay);
+            }
+            
+            // Dias do mês
+            for (let dia = 1; dia <= diasNoMes; dia++) {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'calendar-day';
+                dayDiv.innerHTML = `<div class="day-number">${dia}</div><ul class="day-events"></ul>`;
+                
+                // Verificar eventos neste dia
+                const dataAtual = `${anoAtual}-${(mesAtual + 1).toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`;
+                const eventosDia = eventos.filter(e => e.date === dataAtual);
+                
+                if (eventosDia.length > 0) {
+                    const eventsList = dayDiv.querySelector('.day-events');
+                    eventosDia.forEach(evento => {
+                        const eventItem = document.createElement('li');
+                        eventItem.className = `day-event ${evento.type}`;
+                        eventItem.textContent = evento.title;
+                        eventItem.onclick = () => verDetalhesEvento(evento.id);
+                        eventsList.appendChild(eventItem);
+                    });
+                }
+                
+                // Destacar hoje
+                const hoje = new Date();
+                if (dia === hoje.getDate() && mesAtual === hoje.getMonth() && anoAtual === hoje.getFullYear()) {
+                    dayDiv.style.backgroundColor = 'rgba(26, 58, 143, 0.05)';
+                    dayDiv.style.border = '2px solid var(--primary)';
+                }
+                
+                calendarGrid.appendChild(dayDiv);
+            }
+        }
+        
+        // Renderizar tabela de eventos
+        function renderizarTabelaEventos() {
+            const tbody = document.getElementById('eventsTableBody');
+            tbody.innerHTML = '';
+            
+            // Ordenar por data
+            const eventosOrdenados = [...eventos].sort((a, b) => new Date(a.date) - new Date(b.date));
+            
+            eventosOrdenados.forEach(evento => {
+                const dataEvento = new Date(evento.date);
+                const hoje = new Date();
+                const status = getStatusEvento(evento, dataEvento, hoje);
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${evento.title}</strong></td>
+                    <td><span class="event-type type-${evento.type}">${getTipoTexto(evento.type)}</span></td>
+                    <td>${formatarData(dataEvento)} ${evento.time}</td>
+                    <td>${evento.location}</td>
+                    <td>${evento.currentParticipants || 0}/${evento.maxParticipants || '∞'}</td>
+                    <td><span class="event-status status-${status}">${getStatusTexto(status)}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-btn" onclick="verDetalhesEvento(${evento.id})" title="Ver detalhes">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn" onclick="editarEvento(${evento.id})" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn" onclick="excluirEvento(${evento.id})" title="Excluir">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Funções do calendário
+        function mudarMes(delta) {
+            mesAtual += delta;
+            
+            if (mesAtual < 0) {
+                mesAtual = 11;
+                anoAtual--;
+            } else if (mesAtual > 11) {
+                mesAtual = 0;
+                anoAtual++;
+            }
+            
+            atualizarCalendario();
+        }
+        
+        function hoje() {
+            const hoje = new Date();
+            mesAtual = hoje.getMonth();
+            anoAtual = hoje.getFullYear();
+            atualizarCalendario();
+        }
+        
+        function mudarVista(vista) {
+            // Atualizar botões ativos
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Em desenvolvimento: mudar entre vistas
+            alert(`Mudando para vista: ${vista}\nFuncionalidade completa em desenvolvimento...`);
+        }
+        
+        // Modal functions
+        function abrirModalNovoEvento() {
+            eventoEditando = null;
+            document.getElementById('modalTitle').textContent = 'Novo Evento';
+            document.getElementById('eventForm').reset();
+            document.getElementById('eventId').value = '';
+            document.getElementById('eventDate').valueAsDate = new Date();
+            document.getElementById('eventTime').value = '14:00';
+            document.getElementById('eventModal').style.display = 'flex';
+        }
+        
+        function editarEvento(id) {
+            eventoEditando = eventos.find(e => e.id === id);
+            if (!eventoEditando) return;
+            
+            document.getElementById('modalTitle').textContent = 'Editar Evento';
+            document.getElementById('eventTitle').value = eventoEditando.title;
+            document.getElementById('eventType').value = eventoEditando.type;
+            document.getElementById('eventDate').value = eventoEditando.date;
+            document.getElementById('eventTime').value = eventoEditando.time;
+            document.getElementById('eventDuration').value = eventoEditando.duration || 2;
+            document.getElementById('eventLocation').value = eventoEditando.location;
+            document.getElementById('eventDescription').value = eventoEditando.description;
+            document.getElementById('eventMaxParticipants').value = eventoEditando.maxParticipants || 50;
+            document.getElementById('eventStatus').value = eventoEditando.status || 'planned';
+            document.getElementById('eventOrganizer').value = eventoEditando.organizer || 'CESE-UJC';
+            document.getElementById('eventNotes').value = eventoEditando.notes || '';
+            document.getElementById('eventId').value = eventoEditando.id;
+            
+            document.getElementById('eventModal').style.display = 'flex';
+        }
+        
+        function fecharModal() {
+            document.getElementById('eventModal').style.display = 'none';
+            eventoEditando = null;
+        }
+        
+        // Salvar evento
+        function salvarEvento(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const dados = Object.fromEntries(formData);
+            
+            const eventoData = {
+                id: eventoEditando ? eventoEditando.id : Date.now(),
+                title: dados.eventTitle,
+                type: dados.eventType,
+                date: dados.eventDate,
+                time: dados.eventTime,
+                duration: parseFloat(dados.eventDuration),
+                location: dados.eventLocation,
+                description: dados.eventDescription,
+                maxParticipants: parseInt(dados.eventMaxParticipants),
+                currentParticipants: eventoEditando ? eventoEditando.currentParticipants || 0 : 0,
+                status: dados.eventStatus,
+                organizer: dados.eventOrganizer,
+                notes: dados.eventNotes,
+                dataCriacao: new Date().toISOString()
+            };
+            
+            if (eventoEditando) {
+                // Atualizar evento existente
+                const index = eventos.findIndex(e => e.id === eventoEditando.id);
+                eventos[index] = eventoData;
+            } else {
+                // Adicionar novo evento
+                eventos.push(eventoData);
+            }
+            
+            salvarEventos();
+            atualizarEstatisticas();
+            atualizarCalendario();
+            renderizarTabelaEventos();
+            fecharModal();
+            
+            alert(eventoEditando ? 'Evento atualizado com sucesso!' : 'Evento criado com sucesso!');
+        }
+        
+        // Ver detalhes do evento
+        function verDetalhesEvento(id) {
+            const evento = eventos.find(e => e.id === id);
+            if (!evento) return;
+            
+            const detalhes = `
+                📅 ${evento.title}
+                📍 ${evento.location}
+                🗓️ ${formatarData(new Date(evento.date))} ${evento.time}
+                ⏱️ ${evento.duration} horas
+                👥 ${evento.currentParticipants || 0} participantes
+                📝 ${evento.description}
+            `;
+            
+            alert(detalhes);
+        }
+        
+        // Excluir evento
+        function excluirEvento(id) {
+            if (confirm('Tem certeza que deseja excluir este evento?')) {
+                eventos = eventos.filter(e => e.id !== id);
+                salvarEventos();
+                atualizarEstatisticas();
+                atualizarCalendario();
+                renderizarTabelaEventos();
+                alert('Evento excluído com sucesso!');
+            }
+        }
+        
+        // Filtrar eventos
+        function filtrarEventos(filtro) {
+            alert(`Filtrando eventos: ${filtro}\nFuncionalidade completa em desenvolvimento...`);
+        }
+        
+        // Exportar calendário
+        function exportarCalendario() {
+            const csv = eventos.map(e => 
+                `"${e.title}","${e.type}","${e.date}","${e.time}","${e.location}","${e.description}"`
+            ).join('\n');
+            
+            const headers = 'Título,Tipo,Data,Hora,Local,Descrição';
+            const conteudo = headers + '\n' + csv;
+            
+            const blob = new Blob([conteudo], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `calendario-cese-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+        
+        // Funções auxiliares
+        function getTipoTexto(tipo) {
+            switch(tipo) {
+                case 'debate': return 'Debate';
+                case 'workshop': return 'Workshop';
+                case 'seminar': return 'Seminário';
+                case 'meeting': return 'Reunião';
+                case 'visita': return 'Visita Técnica';
+                default: return 'Outro';
+            }
+        }
+        
+        function getStatusEvento(evento, dataEvento, hoje) {
+            if (evento.status === 'cancelled') return 'cancelled';
+            if (evento.status === 'completed') return 'completed';
+            
+            const diffDias = Math.floor((dataEvento - hoje) / (1000 * 60 * 60 * 24));
+            
+            if (diffDias < 0) return 'completed';
+            if (diffDias === 0) return 'ongoing';
+            return 'planned';
+        }
+        
+        function getStatusTexto(status) {
+            switch(status) {
+                case 'planned': return 'Planeado';
+                case 'ongoing': return 'Em Andamento';
+                case 'completed': return 'Concluído';
+                case 'cancelled': return 'Cancelado';
+                default: return 'Planeado';
+            }
+        }
+        
+        function formatarData(data) {
+            return data.toLocaleDateString('pt-MZ', {
+                weekday: 'short',
+                day: '2-digit',
+                month: 'short'
+            });
+        }
+        
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', carregarDados);
+        
+        // Fechar modal ao clicar fora
+        window.onclick = function(event) {
+            const modal = document.getElementById('eventModal');
+            if (event.target === modal) {
+                fecharModal();
+            }
+        };
+    </script>
+</body>
+</html>
