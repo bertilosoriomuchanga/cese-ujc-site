@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👥 Gerir Membros - CESE-UJC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* (Manter o mesmo estilo do dashboard-admin) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #1a3a8f;
+            --primary-dark: #0d2a6d;
+            --secondary: #d4af37;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --border: #e1e5eb;
+        }
+        
+        /* Sidebar (igual ao dashboard-admin) */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 20px 0;
+            z-index: 1000;
+        }
+        
+        .logo {
+            text-align: center;
+            padding: 0 20px 30px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+        
+        .logo h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .user-info {
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .user-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .user-info .user-role {
+            background: var(--secondary);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0 15px;
+        }
+        
+        .nav-item {
+            margin-bottom: 5px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: #555;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: rgba(26, 58, 143, 0.1);
+            color: var(--primary);
+        }
+        
+        .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .logout-btn {
+            margin: 20px 15px 0;
+            display: block;
+            width: calc(100% - 30px);
+            text-align: center;
+            padding: 12px;
+            background: var(--light);
+            color: var(--danger);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+            min-height: 100vh;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .page-title h1 {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+        
+        .page-title p {
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 58, 143, 0.3);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+        }
+        
+        /* Members Grid */
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .member-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .member-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .member-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .member-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            margin-right: 20px;
+        }
+        
+        .member-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .member-role {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .role-admin { background: rgba(212, 175, 55, 0.1); color: #b8941f; }
+        .role-cfo { background: rgba(46, 204, 113, 0.1); color: var(--success); }
+        .role-member { background: rgba(52, 152, 219, 0.1); color: #2980b9; }
+        
+        .member-stats {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            padding: 15px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .member-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .action-btn.edit {
+            background: rgba(52, 152, 219, 0.1);
+            color: #2980b9;
+        }
+        
+        .action-btn.edit:hover {
+            background: #2980b9;
+            color: white;
+        }
+        
+        .action-btn.delete {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--danger);
+        }
+        
+        .action-btn.delete:hover {
+            background: var(--danger);
+            color: white;
+        }
+        
+        /* Search and Filter */
+        .search-filter {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .filter-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .filter-group {
+            flex: 1;
+        }
+        
+        .filter-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .filter-group input,
+        .filter-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .filter-group input:focus,
+        .filter-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 58, 143, 0.1);
+        }
+        
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        
+        .summary-card h3 {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .summary-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .modal-header h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .close-modal:hover {
+            color: var(--danger);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 58, 143, 0.1);
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border);
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+            }
+            
+            .sidebar .logo h2,
+            .sidebar .logo p,
+            .sidebar .user-info h3,
+            .sidebar .user-info .user-role,
+            .sidebar .nav-link span,
+            .sidebar .logout-btn span {
+                display: none;
+            }
+            
+            .sidebar .logo,
+            .sidebar .user-info,
+            .sidebar .nav-link,
+            .sidebar .logout-btn {
+                text-align: center;
+                justify-content: center;
+                padding: 15px 5px;
+            }
+            
+            .sidebar .nav-link i {
+                margin-right: 0;
+                font-size: 1.2rem;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            
+            .members-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <h2>🛡️ CESE-UJC</h2>
+            <p>Sistema de Gestão</p>
+        </div>
+        
+        <div class="user-info">
+            <div class="user-avatar">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <h3 id="userName">Administrador</h3>
+            <span class="user-role" id="userRole">ADMIN</span>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard-admin.html" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="gerir-membros.html" class="nav-link active">
+                    <i class="fas fa-users"></i>
+                    <span>Gerir Membros</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="gerir-financas.html" class="nav-link">
+                    <i class="fas fa-coins"></i>
+                    <span>Finanças</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="gerir-eventos.html" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Eventos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="relatorios.html" class="nav-link">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Relatórios</span>
+                </a>
+            </li>
+        </ul>
+        
+        <a href="index.html" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Sair</span>
+        </a>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="page-header">
+            <div class="page-title">
+                <h1>👥 Gerir Membros</h1>
+                <p>Gerencie todos os membros do CESE-UJC</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="abrirModalAdicionar()">
+                    <i class="fas fa-user-plus"></i>
+                    Adicionar Membro
+                </button>
+                <button class="btn btn-success" onclick="exportarMembros()">
+                    <i class="fas fa-download"></i>
+                    Exportar Lista
+                </button>
+            </div>
+        </div>
+        
+        <!-- Search and Filter -->
+        <div class="search-filter">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="search"><i class="fas fa-search"></i> Pesquisar Membro</label>
+                    <input type="text" id="search" placeholder="Digite nome, email ou telefone..." oninput="filtrarMembros()">
+                </div>
+                <div class="filter-group">
+                    <label for="filterRole"><i class="fas fa-filter"></i> Filtrar por Nível</label>
+                    <select id="filterRole" onchange="filtrarMembros()">
+                        <option value="all">Todos os Níveis</option>
+                        <option value="admin">Administradores</option>
+                        <option value="cfo">CFO</option>
+                        <option value="membro">Membros</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filterStatus"><i class="fas fa-filter"></i> Status de Quota</label>
+                    <select id="filterStatus" onchange="filtrarMembros()">
+                        <option value="all">Todos os Status</option>
+                        <option value="paid">Quotas Pagas</option>
+                        <option value="pending">Quotas Pendentes</option>
+                        <option value="overdue">Em Atraso</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Members Grid -->
+        <div class="members-grid" id="membersGrid">
+            <!-- Membros serão carregados via JavaScript -->
+        </div>
+        
+        <!-- Stats Summary -->
+        <div class="stats-summary">
+            <div class="summary-card">
+                <h3>Total de Membros</h3>
+                <div class="number" id="totalMembers">0</div>
+            </div>
+            <div class="summary-card">
+                <h3>Administradores</h3>
+                <div class="number" id="totalAdmins">0</div>
+            </div>
+            <div class="summary-card">
+                <h3>CFOs</h3>
+                <div class="number" id="totalCFOs">0</div>
+            </div>
+            <div class="summary-card">
+                <h3>Quotas Pagas</h3>
+                <div class="number" id="paidQuotas">0%</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Adicionar/Editar Membro -->
+    <div class="modal" id="memberModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Adicionar Novo Membro</h2>
+                <button class="close-modal" onclick="fecharModal()">&times;</button>
+            </div>
+            
+            <form id="memberForm" onsubmit="salvarMembro(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nome">Nome Completo *</label>
+                        <input type="text" id="nome" name="nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="telefone">Telefone</label>
+                        <input type="tel" id="telefone" name="telefone" placeholder="84 XXX XXXX">
+                    </div>
+                    <div class="form-group">
+                        <label for="curso">Curso/Faculdade</label>
+                        <input type="text" id="curso" name="curso" placeholder="Ex: Economia">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nivel">Nível de Acesso *</label>
+                        <select id="nivel" name="nivel" required>
+                            <option value="">Selecione um nível</option>
+                            <option value="membro">Membro Participante</option>
+                            <option value="cfo">CFO (Gestão Financeira)</option>
+                            <option value="admin">Administrador</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="quotaMensal">Quota Mensal (MT)</label>
+                        <input type="number" id="quotaMensal" name="quotaMensal" min="0" step="5" value="10">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="observacoes">Observações</label>
+                    <textarea id="observacoes" name="observacoes" rows="3" placeholder="Notas sobre o membro..."></textarea>
+                </div>
+                
+                <input type="hidden" id="membroId" name="membroId">
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn" onclick="fecharModal()" style="background: #f8f9fa; color: #555;">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Salvar Membro
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Sistema de Membros usando LocalStorage
+        const MEMBROS_KEY = 'cese_membros';
+        let membros = [];
+        let membroEditando = null;
+        
+        // Verificar login
+        function verificarLogin() {
+            const sessao = localStorage.getItem('cese_sessao');
+            if (!sessao) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            const usuario = JSON.parse(sessao);
+            if (usuario.nivel !== 'admin') {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            document.getElementById('userName').textContent = usuario.nome;
+            document.getElementById('userRole').textContent = usuario.cargo;
+        }
+        
+        // Carregar membros do LocalStorage
+        function carregarMembros() {
+            verificarLogin();
+            
+            const membrosSalvos = localStorage.getItem(MEMBROS_KEY);
+            if (membrosSalvos) {
+                membros = JSON.parse(membrosSalvos);
+            } else {
+                // Membros iniciais de exemplo
+                membros = [
+                    {
+                        id: 1,
+                        nome: 'Cecília Mungoi',
+                        email: 'pca@cese.ujc',
+                        telefone: '84 111 1111',
+                        curso: 'Economia',
+                        nivel: 'admin',
+                        quotaMensal: 50,
+                        quotaStatus: 'paid',
+                        dataRegistro: '2026-01-01',
+                        observacoes: 'Presidente do Conselho de Administração'
+                    },
+                    {
+                        id: 2,
+                        nome: 'Bertil Muchanga',
+                        email: 'ceo@cese.ujc',
+                        telefone: '84 222 2222',
+                        curso: 'Gestão',
+                        nivel: 'admin',
+                        quotaMensal: 35,
+                        quotaStatus: 'paid',
+                        dataRegistro: '2026-01-01',
+                        observacoes: 'Chief Executive Officer'
+                    },
+                    {
+                        id: 3,
+                        nome: 'Clayton Ngovene',
+                        email: 'cfo@cese.ujc',
+                        telefone: '84 333 3333',
+                        curso: 'Finanças',
+                        nivel: 'cfo',
+                        quotaMensal: 35,
+                        quotaStatus: 'paid',
+                        dataRegistro: '2026-01-01',
+                        observacoes: 'Chief Financial Officer'
+                    },
+                    {
+                        id: 4,
+                        nome: 'Maria João',
+                        email: 'maria@email.com',
+                        telefone: '84 444 4444',
+                        curso: 'Economia',
+                        nivel: 'membro',
+                        quotaMensal: 10,
+                        quotaStatus: 'paid',
+                        dataRegistro: '2026-01-05',
+                        observacoes: 'Membro ativo desde Janeiro'
+                    }
+                ];
+                salvarMembros();
+            }
+            
+            atualizarEstatisticas();
+            renderizarMembros(membros);
+        }
+        
+        // Salvar membros no LocalStorage
+        function salvarMembros() {
+            localStorage.setItem(MEMBROS_KEY, JSON.stringify(membros));
+        }
+        
+        // Renderizar lista de membros
+        function renderizarMembros(listaMembros) {
+            const grid = document.getElementById('membersGrid');
+            grid.innerHTML = '';
+            
+            listaMembros.forEach(membro => {
+                // Determinar cor do avatar baseado no nível
+                let avatarColor = '';
+                let roleClass = '';
+                let roleText = '';
+                
+                switch(membro.nivel) {
+                    case 'admin':
+                        avatarColor = 'linear-gradient(135deg, #d4af37, #b8941f)';
+                        roleClass = 'role-admin';
+                        roleText = 'Administrador';
+                        break;
+                    case 'cfo':
+                        avatarColor = 'linear-gradient(135deg, #2ecc71, #27ae60)';
+                        roleClass = 'role-cfo';
+                        roleText = 'CFO';
+                        break;
+                    default:
+                        avatarColor = 'linear-gradient(135deg, #3498db, #2980b9)';
+                        roleClass = 'role-member';
+                        roleText = 'Membro';
+                }
+                
+                // Inicial do nome para avatar
+                const inicial = membro.nome.charAt(0).toUpperCase();
+                
+                const card = document.createElement('div');
+                card.className = 'member-card';
+                card.innerHTML = `
+                    <div class="member-header">
+                        <div class="member-avatar" style="background: ${avatarColor}">
+                            ${inicial}
+                        </div>
+                        <div class="member-info">
+                            <h3>${membro.nome}</h3>
+                            <span class="member-role ${roleClass}">${roleText}</span>
+                            <p style="color: #666; font-size: 0.9rem;">${membro.email}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="member-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">${membro.quotaMensal}</div>
+                            <div class="stat-label">Quota MT</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${membro.quotaStatus === 'paid' ? 'Pago' : 'Pendente'}</div>
+                            <div class="stat-label">Status</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${membro.curso || 'N/A'}</div>
+                            <div class="stat-label">Curso</div>
+                        </div>
+                    </div>
+                    
+                    <div class="member-actions">
+                        <button class="action-btn edit" onclick="editarMembro(${membro.id})">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="action-btn delete" onclick="confirmarExclusao(${membro.id})">
+                            <i class="fas fa-trash"></i> Remover
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        
+        // Atualizar estatísticas
+        function atualizarEstatisticas() {
+            const total = membros.length;
+            const admins = membros.filter(m => m.nivel === 'admin').length;
+            const cfos = membros.filter(m => m.nivel === 'cfo').length;
+            const paid = membros.filter(m => m.quotaStatus === 'paid').length;
+            const paidPercent = total > 0 ? Math.round((paid / total) * 100) : 0;
+            
+            document.getElementById('totalMembers').textContent = total;
+            document.getElementById('totalAdmins').textContent = admins;
+            document.getElementById('totalCFOs').textContent = cfos;
+            document.getElementById('paidQuotas').textContent = `${paidPercent}%`;
+        }
+        
+        // Filtrar membros
+        function filtrarMembros() {
+            const search = document.getElementById('search').value.toLowerCase();
+            const role = document.getElementById('filterRole').value;
+            const status = document.getElementById('filterStatus').value;
+            
+            let filtrados = membros;
+            
+            // Filtrar por busca
+            if (search) {
+                filtrados = filtrados.filter(m => 
+                    m.nome.toLowerCase().includes(search) ||
+                    m.email.toLowerCase().includes(search) ||
+                    (m.telefone && m.telefone.includes(search))
+                );
+            }
+            
+            // Filtrar por nível
+            if (role !== 'all') {
+                filtrados = filtrados.filter(m => m.nivel === role);
+            }
+            
+            // Filtrar por status
+            if (status !== 'all') {
+                filtrados = filtrados.filter(m => m.quotaStatus === status);
+            }
+            
+            renderizarMembros(filtrados);
+        }
+        
+        // Modal functions
+        function abrirModalAdicionar() {
+            membroEditando = null;
+            document.getElementById('modalTitle').textContent = 'Adicionar Novo Membro';
+            document.getElementById('memberForm').reset();
+            document.getElementById('membroId').value = '';
+            document.getElementById('memberModal').style.display = 'flex';
+        }
+        
+        function editarMembro(id) {
+            membroEditando = membros.find(m => m.id === id);
+            if (!membroEditando) return;
+            
+            document.getElementById('modalTitle').textContent = 'Editar Membro';
+            document.getElementById('nome').value = membroEditando.nome;
+            document.getElementById('email').value = membroEditando.email;
+            document.getElementById('telefone').value = membroEditando.telefone || '';
+            document.getElementById('curso').value = membroEditando.curso || '';
+            document.getElementById('nivel').value = membroEditando.nivel;
+            document.getElementById('quotaMensal').value = membroEditando.quotaMensal;
+            document.getElementById('observacoes').value = membroEditando.observacoes || '';
+            document.getElementById('membroId').value = membroEditando.id;
+            
+            document.getElementById('memberModal').style.display = 'flex';
+        }
+        
+        function fecharModal() {
+            document.getElementById('memberModal').style.display = 'none';
+            membroEditando = null;
+        }
+        
+        // Salvar membro
+        function salvarMembro(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const dados = Object.fromEntries(formData);
+            
+            if (membroEditando) {
+                // Atualizar membro existente
+                Object.assign(membroEditando, {
+                    nome: dados.nome,
+                    email: dados.email,
+                    telefone: dados.telefone,
+                    curso: dados.curso,
+                    nivel: dados.nivel,
+                    quotaMensal: parseInt(dados.quotaMensal),
+                    observacoes: dados.observacoes
+                });
+            } else {
+                // Adicionar novo membro
+                const novoMembro = {
+                    id: Date.now(), // ID único
+                    nome: dados.nome,
+                    email: dados.email,
+                    telefone: dados.telefone,
+                    curso: dados.curso,
+                    nivel: dados.nivel,
+                    quotaMensal: parseInt(dados.quotaMensal),
+                    quotaStatus: 'pending',
+                    dataRegistro: new Date().toISOString().split('T')[0],
+                    observacoes: dados.observacoes
+                };
+                membros.push(novoMembro);
+            }
+            
+            salvarMembros();
+            renderizarMembros(membros);
+            atualizarEstatisticas();
+            fecharModal();
+            
+            alert(membroEditando ? 'Membro atualizado com sucesso!' : 'Membro adicionado com sucesso!');
+        }
+        
+        // Confirmar exclusão
+        function confirmarExclusao(id) {
+            if (confirm('Tem certeza que deseja remover este membro?')) {
+                excluirMembro(id);
+            }
+        }
+        
+        // Excluir membro
+        function excluirMembro(id) {
+            membros = membros.filter(m => m.id !== id);
+            salvarMembros();
+            renderizarMembros(membros);
+            atualizarEstatisticas();
+            alert('Membro removido com sucesso!');
+        }
+        
+        // Exportar lista
+        function exportarMembros() {
+            const csv = convertToCSV(membros);
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cese-membros-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+        
+        function convertToCSV(arr) {
+            const headers = ['ID,Nome,Email,Telefone,Curso,Nível,Quota Mensal,Status,Data Registro'];
+            const rows = arr.map(m => 
+                `${m.id},"${m.nome}","${m.email}","${m.telefone || ''}","${m.curso || ''}",${m.nivel},${m.quotaMensal},${m.quotaStatus},${m.dataRegistro}`
+            );
+            return headers.concat(rows).join('\n');
+        }
+        
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', carregarMembros);
+        
+        // Fechar modal ao clicar fora
+        window.onclick = function(event) {
+            const modal = document.getElementById('memberModal');
+            if (event.target === modal) {
+                fecharModal();
+            }
+        };
+    </script>
+</body>
+</html>
