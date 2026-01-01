@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 Gestão Financeira - CESE-UJC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* (Manter estilo similar aos outros dashboards) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #1a3a8f;
+            --primary-dark: #0d2a6d;
+            --secondary: #2ecc71;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --border: #e1e5eb;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            padding: 20px 0;
+            z-index: 1000;
+        }
+        
+        .logo {
+            text-align: center;
+            padding: 0 20px 30px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+        
+        .logo h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .user-info {
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--secondary), #27ae60);
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .user-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .user-info .user-role {
+            background: var(--secondary);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0 15px;
+        }
+        
+        .nav-item {
+            margin-bottom: 5px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: #555;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background: rgba(46, 204, 113, 0.1);
+            color: var(--secondary);
+        }
+        
+        .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .logout-btn {
+            margin: 20px 15px 0;
+            display: block;
+            width: calc(100% - 30px);
+            text-align: center;
+            padding: 12px;
+            background: var(--light);
+            color: var(--danger);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+            min-height: 100vh;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .page-title h1 {
+            color: var(--secondary);
+            font-size: 2rem;
+        }
+        
+        .page-title p {
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 58, 143, 0.3);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+        }
+        
+        /* Finance Overview */
+        .finance-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .finance-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .finance-card.blue { border-color: #3498db; }
+        .finance-card.orange { border-color: var(--warning); }
+        .finance-card.red { border-color: var(--danger); }
+        
+        .finance-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .finance-card-header h3 {
+            font-size: 1rem;
+            color: #666;
+        }
+        
+        .finance-card-header i {
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+        
+        .finance-card.blue .finance-card-header i { color: #3498db; }
+        .finance-card.orange .finance-card-header i { color: var(--warning); }
+        .finance-card.red .finance-card-header i { color: var(--danger); }
+        
+        .finance-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .finance-subtext {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        /* Quotas Table */
+        .quotas-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+        }
+        
+        .section-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            margin-top: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+        
+        thead {
+            background: var(--light);
+        }
+        
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #555;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .status-paid {
+            background: rgba(46, 204, 113, 0.1);
+            color: var(--success);
+        }
+        
+        .status-pending {
+            background: rgba(243, 156, 18, 0.1);
+            color: var(--warning);
+        }
+        
+        .status-overdue {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--danger);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: none;
+            background: var(--light);
+            color: #555;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Month Selector */
+        .month-selector {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .month-selector label {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .month-selector select {
+            padding: 10px 15px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            min-width: 200px;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .modal-header h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .close-modal:hover {
+            color: var(--danger);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 58, 143, 0.1);
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border);
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+            }
+            
+            .sidebar .logo h2,
+            .sidebar .logo p,
+            .sidebar .user-info h3,
+            .sidebar .user-info .user-role,
+            .sidebar .nav-link span,
+            .sidebar .logout-btn span {
+                display: none;
+            }
+            
+            .sidebar .logo,
+            .sidebar .user-info,
+            .sidebar .nav-link,
+            .sidebar .logout-btn {
+                text-align: center;
+                justify-content: center;
+                padding: 15px 5px;
+            }
+            
+            .sidebar .nav-link i {
+                margin-right: 0;
+                font-size: 1.2rem;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            
+            .finance-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .section-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <h2>💼 CESE-UJC</h2>
+            <p>Gestão Financeira</p>
+        </div>
+        
+        <div class="user-info">
+            <div class="user-avatar">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <h3 id="userName">CFO</h3>
+            <span class="user-role" id="userRole">CFO</span>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard-cfo.html" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="gerir-financas.html" class="nav-link active">
+                    <i class="fas fa-money-check-alt"></i>
+                    <span>Gestão Financeira</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="registar-pagamento.html" class="nav-link">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Registar Pagamento</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="relatorios.html" class="nav-link">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <span>Relatórios</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="inadimplentes.html" class="nav-link">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Inadimplentes</span>
+                </a>
+            </li>
+        </ul>
+        
+        <a href="index.html" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Sair</span>
+        </a>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="page-header">
+            <div class="page-title">
+                <h1>💰 Gestão Financeira</h1>
+                <p>Gerencie quotas e finanças do CESE-UJC</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-success" onclick="registarPagamento()">
+                    <i class="fas fa-plus-circle"></i>
+                    Novo Pagamento
+                </button>
+                <button class="btn btn-primary" onclick="exportarRelatorio()">
+                    <i class="fas fa-download"></i>
+                    Exportar Relatório
+                </button>
+            </div>
+        </div>
+        
+        <!-- Finance Overview -->
+        <div class="finance-overview">
+            <div class="finance-card">
+                <div class="finance-card-header">
+                    <h3>Receita do Mês</h3>
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="finance-number" id="receitaMes">0 MT</div>
+                <div class="finance-subtext">Janeiro 2026</div>
+            </div>
+            
+            <div class="finance-card blue">
+                <div class="finance-card-header">
+                    <h3>Quotas Pagas</h3>
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="finance-number" id="quotasPagas">0%</div>
+                <div class="finance-subtext" id="membrosPagaram">0/0 membros</div>
+            </div>
+            
+            <div class="finance-card orange">
+                <div class="finance-card-header">
+                    <h3>Em Atraso</h3>
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="finance-number" id="emAtraso">0</div>
+                <div class="finance-subtext">Membros inadimplentes</div>
+            </div>
+            
+            <div class="finance-card red">
+                <div class="finance-card-header">
+                    <h3>Valor Pendente</h3>
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="finance-number" id="valorPendente">0 MT</div>
+                <div class="finance-subtext">Total em dívida</div>
+            </div>
+        </div>
+        
+        <!-- Month Selector -->
+        <div class="month-selector">
+            <label for="selectMonth">Selecione o Mês:</label>
+            <select id="selectMonth" onchange="carregarDadosMes()">
+                <option value="2026-01">Janeiro 2026</option>
+                <option value="2026-02">Fevereiro 2026</option>
+                <option value="2026-03">Março 2026</option>
+                <option value="2026-04">Abril 2026</option>
+                <option value="2026-05">Maio 2026</option>
+                <option value="2026-06">Junho 2026</option>
+            </select>
+            <button class="btn" onclick="carregarDadosMes()" style="background: var(--light);">
+                <i class="fas fa-sync-alt"></i> Atualizar
+            </button>
+        </div>
+        
+        <!-- Quotas Table -->
+        <div class="quotas-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-table"></i>
+                    Quotas - <span id="currentMonth">Janeiro 2026</span>
+                </h2>
+                <div class="section-actions">
+                    <button class="btn" onclick="filtrarQuotas('all')" style="background: var(--light);">
+                        <i class="fas fa-filter"></i> Todos
+                    </button>
+                    <button class="btn" onclick="filtrarQuotas('pending')" style="background: var(--light);">
+                        <i class="fas fa-clock"></i> Pendentes
+                    </button>
+                    <button class="btn" onclick="filtrarQuotas('overdue')" style="background: var(--light);">
+                        <i class="fas fa-exclamation-triangle"></i> Em Atraso
+                    </button>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table id="quotasTable">
+                    <thead>
+                        <tr>
+                            <th>Membro</th>
+                            <th>Nível</th>
+                            <th>Quota Mensal</th>
+                            <th>Status</th>
+                            <th>Data Pagamento</th>
+                            <th>Comprovante</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="quotasTableBody">
+                        <!-- Dados serão carregados via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Registar Pagamento -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>💳 Registar Pagamento</h2>
+                <button class="close-modal" onclick="fecharModal()">&times;</button>
+            </div>
+            
+            <form id="paymentForm" onsubmit="salvarPagamento(event)">
+                <div class="form-group">
+                    <label for="selectMembro">Selecionar Membro *</label>
+                    <select id="selectMembro" required>
+                        <option value="">Selecione um membro</option>
+                        <!-- Membros serão carregados via JS -->
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="valorPago">Valor Pago (MT) *</label>
+                    <input type="number" id="valorPago" min="5" step="5" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="mesReferencia">Mês de Referência *</label>
+                    <select id="mesReferencia" required>
+                        <option value="2026-01">Janeiro 2026</option>
+                        <option value="2026-02">Fevereiro 2026</option>
+                        <option value="2026-03">Março 2026</option>
+                        <option value="2026-04">Abril 2026</option>
+                        <option value="2026-05">Maio 2026</option>
+                        <option value="2026-06">Junho 2026</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="dataPagamento">Data do Pagamento *</label>
+                    <input type="date" id="dataPagamento" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="metodoPagamento">Método de Pagamento *</label>
+                    <select id="metodoPagamento" required>
+                        <option value="mobile">Mobile Money</option>
+                        <option value="dinheiro">Dinheiro</option>
+                        <option value="transferencia">Transferência Bancária</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="comprovante">Nº Comprovante/Referência</label>
+                    <input type="text" id="comprovante" placeholder="Ex: Mpesa123456">
+                </div>
+                
+                <div class="form-group">
+                    <label for="observacoes">Observações</label>
+                    <textarea id="observacoes" rows="3" placeholder="Notas sobre o pagamento..."></textarea>
+                </div>
+                
+                <input type="hidden" id="pagamentoId">
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn" onclick="fecharModal()" style="background: #f8f9fa; color: #555;">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i>
+                        Registar Pagamento
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Sistema Financeiro
+        const MEMBROS_KEY = 'cese_membros';
+        const PAGAMENTOS_KEY = 'cese_pagamentos';
+        let membros = [];
+        let pagamentos = [];
+        let mesAtual = '2026-01';
+        
+        // Verificar login
+        function verificarLogin() {
+            const sessao = localStorage.getItem('cese_sessao');
+            if (!sessao) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            const usuario = JSON.parse(sessao);
+            if (usuario.nivel !== 'cfo' && usuario.nivel !== 'admin') {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            document.getElementById('userName').textContent = usuario.nome;
+            document.getElementById('userRole').textContent = usuario.cargo;
+            
+            return usuario;
+        }
+        
+        // Carregar dados
+        function carregarDados() {
+            verificarLogin();
+            
+            // Carregar membros
+            const membrosSalvos = localStorage.getItem(MEMBROS_KEY);
+            if (membrosSalvos) {
+                membros = JSON.parse(membrosSalvos);
+            }
+            
+            // Carregar pagamentos
+            const pagamentosSalvos = localStorage.getItem(PAGAMENTOS_KEY);
+            if (pagamentosSalvos) {
+                pagamentos = JSON.parse(pagamentosSalvos);
+            } else {
+                // Pagamentos de exemplo
+                pagamentos = [
+                    {
+                        id: 1,
+                        membroId: 1,
+                        membroNome: 'Cecília Mungoi',
+                        valor: 50,
+                        mes: '2026-01',
+                        data: '2026-01-10',
+                        metodo: 'mobile',
+                        comprovante: 'MPESA001',
+                        status: 'paid'
+                    },
+                    {
+                        id: 2,
+                        membroId: 2,
+                        membroNome: 'Bertil Muchanga',
+                        valor: 35,
+                        mes: '2026-01',
+                        data: '2026-01-12',
+                        metodo: 'dinheiro',
+                        comprovante: '',
+                        status: 'paid'
+                    }
+                ];
+                salvarPagamentos();
+            }
+            
+            carregarDadosMes();
+            preencherSelectMembros();
+        }
+        
+        // Salvar pagamentos
+        function salvarPagamentos() {
+            localStorage.setItem(PAGAMENTOS_KEY, JSON.stringify(pagamentos));
+        }
+        
+        // Carregar dados do mês selecionado
+        function carregarDadosMes() {
+            mesAtual = document.getElementById('selectMonth').value;
+            
+            // Atualizar título
+            const meses = {
+                '2026-01': 'Janeiro 2026',
+                '2026-02': 'Fevereiro 2026',
+                '2026-03': 'Março 2026',
+                '2026-04': 'Abril 2026',
+                '2026-05': 'Maio 2026',
+                '2026-06': 'Junho 2026'
+            };
+            document.getElementById('currentMonth').textContent = meses[mesAtual];
+            
+            // Calcular estatísticas
+            calcularEstatisticas();
+            
+            // Renderizar tabela
+            renderizarTabelaQuotas();
+        }
+        
+        // Calcular estatísticas
+        function calcularEstatisticas() {
+            const pagamentosMes = pagamentos.filter(p => p.mes === mesAtual && p.status === 'paid');
+            const totalMembros = membros.length;
+            const membrosPagaram = pagamentosMes.length;
+            
+            // Receita do mês
+            const receita = pagamentosMes.reduce((sum, p) => sum + p.valor, 0);
+            document.getElementById('receitaMes').textContent = `${receita} MT`;
+            
+            // Percentagem de quotas pagas
+            const percentPago = totalMembros > 0 ? Math.round((membrosPagaram / totalMembros) * 100) : 0;
+            document.getElementById('quotasPagas').textContent = `${percentPago}%`;
+            document.getElementById('membrosPagaram').textContent = `${membrosPagaram}/${totalMembros} membros`;
+            
+            // Membros em atraso (assumindo que todos devem pagar até dia 16)
+            const hoje = new Date();
+            const diaAtual = hoje.getDate();
+            const emAtraso = diaAtual > 16 ? totalMembros - membrosPagaram : 0;
+            document.getElementById('emAtraso').textContent = emAtraso;
+            
+            // Valor pendente
+            const valorEsperado = membros.reduce((sum, m) => sum + m.quotaMensal, 0);
+            const valorPendente = valorEsperado - receita;
+            document.getElementById('valorPendente').textContent = `${valorPendente} MT`;
+        }
+        
+        // Renderizar tabela de quotas
+        function renderizarTabelaQuotas() {
+            const tbody = document.getElementById('quotasTableBody');
+            tbody.innerHTML = '';
+            
+            membros.forEach(membro => {
+                // Verificar se tem pagamento para este mês
+                const pagamento = pagamentos.find(p => 
+                    p.membroId === membro.id && p.mes === mesAtual && p.status === 'paid'
+                );
+                
+                const status = pagamento ? 'paid' : 'pending';
+                const dataPagamento = pagamento ? formatarData(pagamento.data) : '-';
+                const comprovante = pagamento ? pagamento.comprovante || '-' : '-';
+                
+                let statusBadge = '';
+                if (status === 'paid') {
+                    statusBadge = '<span class="status-badge status-paid">Pago</span>';
+                } else {
+                    // Verificar se está em atraso (após dia 16)
+                    const hoje = new Date();
+                    const diaAtual = hoje.getDate();
+                    if (diaAtual > 16) {
+                        statusBadge = '<span class="status-badge status-overdue">Em Atraso</span>';
+                    } else {
+                        statusBadge = '<span class="status-badge status-pending">Pendente</span>';
+                    }
+                }
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${membro.nome}</strong></td>
+                    <td>${getNivelTexto(membro.nivel)}</td>
+                    <td><strong>${membro.quotaMensal} MT</strong></td>
+                    <td>${statusBadge}</td>
+                    <td>${dataPagamento}</td>
+                    <td>${comprovante}</td>
+                    <td>
+                        <div class="action-buttons">
+                            ${!pagamento ? `
+                                <button class="action-btn" onclick="registarPagamentoMembro(${membro.id})" title="Registar pagamento">
+                                    <i class="fas fa-money-bill"></i>
+                                </button>
+                            ` : `
+                                <button class="action-btn" onclick="verDetalhesPagamento(${pagamento.id})" title="Ver detalhes">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="action-btn" onclick="editarPagamento(${pagamento.id})" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            `}
+                            <button class="action-btn" onclick="enviarLembrete(${membro.id})" title="Enviar lembrete">
+                                <i class="fas fa-bell"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+        
+        // Preencher select de membros
+        function preencherSelectMembros() {
+            const select = document.getElementById('selectMembro');
+            select.innerHTML = '<option value="">Selecione um membro</option>';
+            
+            membros.forEach(membro => {
+                const option = document.createElement('option');
+                option.value = membro.id;
+                option.textContent = `${membro.nome} (${membro.quotaMensal} MT)`;
+                select.appendChild(option);
+            });
+        }
+        
+        // Modal functions
+        function registarPagamento() {
+            document.getElementById('paymentModal').style.display = 'flex';
+            document.getElementById('paymentForm').reset();
+            document.getElementById('dataPagamento').valueAsDate = new Date();
+            document.getElementById('mesReferencia').value = mesAtual;
+            document.getElementById('pagamentoId').value = '';
+        }
+        
+        function registarPagamentoMembro(membroId) {
+            registarPagamento();
+            document.getElementById('selectMembro').value = membroId;
+            
+            // Preencher valor automático baseado na quota do membro
+            const membro = membros.find(m => m.id === membroId);
+            if (membro) {
+                document.getElementById('valorPago').value = membro.quotaMensal;
+            }
+        }
+        
+        function fecharModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+        }
+        
+        // Salvar pagamento
+        function salvarPagamento(event) {
+            event.preventDefault();
+            
+            const membroId = parseInt(document.getElementById('selectMembro').value);
+            const membro = membros.find(m => m.id === membroId);
+            
+            const pagamento = {
+                id: Date.now(),
+                membroId: membroId,
+                membroNome: membro ? membro.nome : '',
+                valor: parseInt(document.getElementById('valorPago').value),
+                mes: document.getElementById('mesReferencia').value,
+                data: document.getElementById('dataPagamento').value,
+                metodo: document.getElementById('metodoPagamento').value,
+                comprovante: document.getElementById('comprovante').value,
+                observacoes: document.getElementById('observacoes').value,
+                status: 'paid',
+                dataRegistro: new Date().toISOString()
+            };
+            
+            pagamentos.push(pagamento);
+            salvarPagamentos();
+            
+            // Atualizar status do membro
+            if (membro) {
+                membro.quotaStatus = 'paid';
+                localStorage.setItem(MEMBROS_KEY, JSON.stringify(membros));
+            }
+            
+            carregarDadosMes();
+            fecharModal();
+            
+            alert('Pagamento registado com sucesso!');
+        }
+        
+        // Filtrar quotas
+        function filtrarQuotas(filtro) {
+            alert(`Filtrando por: ${filtro}\nFuncionalidade completa em desenvolvimento...`);
+        }
+        
+        // Exportar relatório
+        function exportarRelatorio() {
+            const csv = gerarCSVRelatorio();
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `relatorio-financeiro-${mesAtual}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+        
+        function gerarCSVRelatorio() {
+            const pagamentosMes = pagamentos.filter(p => p.mes === mesAtual);
+            const headers = ['Membro,Nível,Quota Mensal,Status,Data Pagamento,Método,Comprovante'];
+            const rows = membros.map(membro => {
+                const pagamento = pagamentosMes.find(p => p.membroId === membro.id);
+                return `"${membro.nome}",${membro.nivel},${membro.quotaMensal},"${pagamento ? 'Pago' : 'Pendente'}","${pagamento ? pagamento.data : '-'}","${pagamento ? pagamento.metodo : '-'}","${pagamento ? pagamento.comprovante : '-'}"`;
+            });
+            return headers.concat(rows).join('\n');
+        }
+        
+        // Funções auxiliares
+        function getNivelTexto(nivel) {
+            switch(nivel) {
+                case 'admin': return 'Administrador';
+                case 'cfo': return 'CFO';
+                default: return 'Membro';
+            }
+        }
+        
+        function formatarData(dataStr) {
+            const data = new Date(dataStr);
+            return data.toLocaleDateString('pt-MZ');
+        }
+        
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', carregarDados);
+        
+        // Fechar modal ao clicar fora
+        window.onclick = function(event) {
+            const modal = document.getElementById('paymentModal');
+            if (event.target === modal) {
+                fecharModal();
+            }
+        };
+    </script>
+</body>
+</html>
