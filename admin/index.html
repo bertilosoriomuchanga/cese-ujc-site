@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔐 Login - Sistema CESE-UJC</title>
+    <link rel="stylesheet" href="style-admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a3a8f 0%, #0d2a6d 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .logo {
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            color: #1a3a8f;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .logo .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .login-form {
+            margin-top: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: #1a3a8f;
+            box-shadow: 0 0 0 3px rgba(26, 58, 143, 0.2);
+        }
+        
+        .btn-login {
+            background: linear-gradient(to right, #1a3a8f, #2a4da0);
+            color: white;
+            border: none;
+            padding: 16px;
+            width: 100%;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(26, 58, 143, 0.3);
+        }
+        
+        .user-types {
+            display: flex;
+            justify-content: space-between;
+            margin: 25px 0;
+            gap: 10px;
+        }
+        
+        .user-card {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e1e5eb;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .user-card:hover {
+            border-color: #1a3a8f;
+            transform: translateY(-5px);
+        }
+        
+        .user-card.active {
+            border-color: #1a3a8f;
+            background: rgba(26, 58, 143, 0.05);
+        }
+        
+        .user-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .admin .user-icon { color: #d4af37; }
+        .cfo .user-icon { color: #2ecc71; }
+        .membro .user-icon { color: #3498db; }
+        
+        .user-card h3 {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .user-card p {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .password-hint {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #666;
+            text-align: left;
+        }
+        
+        .password-hint strong {
+            color: #1a3a8f;
+        }
+        
+        .back-to-site {
+            margin-top: 25px;
+        }
+        
+        .back-to-site a {
+            color: #1a3a8f;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .back-to-site a:hover {
+            text-decoration: underline;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        @media (max-width: 500px) {
+            .login-container {
+                padding: 25px;
+            }
+            
+            .user-types {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <h1>🔐 CESE-UJC</h1>
+            <p class="subtitle">Sistema de Gestão do Clube</p>
+        </div>
+        
+        <div class="user-types">
+            <div class="user-card admin active" onclick="selectUserType('admin')">
+                <div class="user-icon"><i class="fas fa-user-shield"></i></div>
+                <h3>Administrador</h3>
+                <p>PCA / Vice-PCA</p>
+            </div>
+            
+            <div class="user-card cfo" onclick="selectUserType('cfo')">
+                <div class="user-icon"><i class="fas fa-chart-line"></i></div>
+                <h3>CFO</h3>
+                <p>Gestão Financeira</p>
+            </div>
+            
+            <div class="user-card membro" onclick="selectUserType('membro')">
+                <div class="user-icon"><i class="fas fa-user"></i></div>
+                <h3>Membro</h3>
+                <p>Participante</p>
+            </div>
+        </div>
+        
+        <form class="login-form" id="loginForm" onsubmit="return login(event)">
+            <div class="form-group">
+                <label for="userType">Nível de Acesso</label>
+                <select id="userType" required>
+                    <option value="admin">Administrador (PCA/Vice-PCA)</option>
+                    <option value="cfo">CFO (Gestão Financeira)</option>
+                    <option value="membro">Membro Participante</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Institucional</label>
+                <input type="email" id="email" placeholder="ex: pca@cese.ujc" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" placeholder="Digite sua senha" required>
+            </div>
+            
+            <div class="error-message" id="errorMessage">
+                ❌ Email ou senha incorretos!
+            </div>
+            
+            <button type="submit" class="btn-login">
+                <i class="fas fa-sign-in-alt"></i> Entrar no Sistema
+            </button>
+        </form>
+        
+        <div class="password-hint">
+            <p><strong>Credenciais de Teste:</strong></p>
+            <p>• Admin: <strong>admin@cese.ujc</strong> / Senha: <strong>CESE2026admin</strong></p>
+            <p>• CFO: <strong>cfo@cese.ujc</strong> / Senha: <strong>CESE2026cfo</strong></p>
+            <p>• Membro: <strong>membro@cese.ujc</strong> / Senha: <strong>CESE2026membro</strong></p>
+        </div>
+        
+        <div class="back-to-site">
+            <a href="../index.html"><i class="fas fa-arrow-left"></i> Voltar ao Site Público</a>
+        </div>
+    </div>
+
+    <script>
+        // Selecionar tipo de usuário
+        function selectUserType(type) {
+            // Remover active de todos
+            document.querySelectorAll('.user-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Adicionar active ao selecionado
+            document.querySelector(`.${type}`).classList.add('active');
+            
+            // Atualizar select
+            document.getElementById('userType').value = type;
+            
+            // Sugerir email baseado no tipo
+            const emailField = document.getElementById('email');
+            emailField.value = `${type}@cese.ujc`;
+            emailField.focus();
+        }
+        
+        // Dados de usuários (simulados - em produção seria Firebase)
+        const usuarios = {
+            'admin@cese.ujc': {
+                senha: 'CESE2026admin',
+                nivel: 'admin',
+                nome: 'Administrador CESE',
+                cargo: 'PCA / Vice-PCA'
+            },
+            'cfo@cese.ujc': {
+                senha: 'CESE2026cfo', 
+                nivel: 'cfo',
+                nome: 'CFO CESE',
+                cargo: 'Chief Financial Officer'
+            },
+            'membro@cese.ujc': {
+                senha: 'CESE2026membro',
+                nivel: 'membro',
+                nome: 'Membro CESE',
+                cargo: 'Participante'
+            }
+        };
+        
+        // Função de login
+        function login(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const userType = document.getElementById('userType').value;
+            
+            // Verificar credenciais
+            if (usuarios[email] && usuarios[email].senha === password && usuarios[email].nivel === userType) {
+                // Salvar sessão
+                const sessao = {
+                    email: email,
+                    nivel: userType,
+                    nome: usuarios[email].nome,
+                    cargo: usuarios[email].cargo,
+                    loginTime: new Date().toISOString()
+                };
+                
+                localStorage.setItem('cese_sessao', JSON.stringify(sessao));
+                
+                // Redirecionar baseado no nível
+                switch(userType) {
+                    case 'admin':
+                        window.location.href = 'dashboard-admin.html';
+                        break;
+                    case 'cfo':
+                        window.location.href = 'dashboard-cfo.html';
+                        break;
+                    case 'membro':
+                        window.location.href = 'dashboard-membro.html';
+                        break;
+                }
+                
+                return true;
+            } else {
+                // Mostrar erro
+                document.getElementById('errorMessage').style.display = 'block';
+                return false;
+            }
+        }
+        
+        // Preencher automaticamente baseado no tipo selecionado no select
+        document.getElementById('userType').addEventListener('change', function() {
+            selectUserType(this.value);
+        });
+        
+        // Auto-preenchimento para facilitar testes
+        window.onload = function() {
+            // Se estiver em desenvolvimento, preencher automaticamente
+            if (window.location.hostname === 'localhost' || window.location.hostname.includes('github.io')) {
+                selectUserType('admin');
+                document.getElementById('password').value = 'CESE2026admin';
+            }
+        };
+    </script>
+</body>
+</html>
