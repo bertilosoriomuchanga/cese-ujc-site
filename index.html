@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CESE-UJC | Clube de Estudos Sociais e Econômicos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loader">
+            <div class="loader-circle"></div>
+            <p>Carregando CESE-UJC...</p>
+        </div>
+    </div>
+
+    <!-- Header/Navigation -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="#" class="logo">
+                    <div class="logo-icon">📊</div>
+                    <div class="logo-text">
+                        <span class="logo-title">CESE</span>
+                        <span class="logo-subtitle">UJC</span>
+                    </div>
+                </a>
+                
+                <button class="menu-toggle" id="menuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#sobre" class="nav-link">Sobre</a></li>
+                    <li><a href="#estrutura" class="nav-link">Estrutura</a></li>
+                    <li><a href="#quotas" class="nav-link">Quotas</a></li>
+                    <li><a href="#atividades" class="nav-link">Atividades</a></li>
+                    <li><a href="#calendario" class="nav-link">Calendário</a></li>
+                    <li><a href="#contato" class="nav-link">Contacto</a></li>
+                    <li><a href="#contato" class="nav-btn">Junte-se a Nós</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="highlight">Clube de Estudos</span>
+                    Sociais e Econômicos
+                </h1>
+                <p class="hero-subtitle">
+                    Uma iniciativa do <strong>NEFEN-UJC</strong> | Universidade Joaquim Chissano
+                </p>
+                <p class="hero-description">
+                    Polo de excelência em análise, argumentação e pesquisa científica. 
+                    Formando líderes críticos e capacitados para representar a UJC.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#sobre" class="btn btn-primary">Conheça o Clube</a>
+                    <a href="#contato" class="btn btn-secondary">Participar</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Sobre Section -->
+    <section class="section sobre-section" id="sobre">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Sobre o <span class="highlight">CESE-UJC</span></h2>
+                <p class="section-subtitle">Promovendo excelência acadêmica desde 2026</p>
+            </div>
+            
+            <div class="sobre-content">
+                <div class="sobre-text">
+                    <h3>Nossa <span class="highlight">Missão</span></h3>
+                    <p>Constituir-nos como um polo de excelência na Universidade Joaquim Chissano, através da análise, argumentação e pesquisa, cultivando o espírito crítico entre os estudantes e capacitando-os a representar a UJC em diversos fóruns e atividades.</p>
+                    
+                    <h3>Nossa <span class="highlight">Visão</span></h3>
+                    <p>Ser referência nacional em debate acadêmico, produção científica e formação de líderes críticos nas áreas sociais e econômicas.</p>
+                </div>
+                
+                <div class="sobre-objectivos">
+                    <h3>Nossos <span class="highlight">Objetivos</span></h3>
+                    <div class="objectivos-grid">
+                        <div class="objetivo-card">
+                            <div class="objetivo-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h4>Análise Crítica</h4>
+                            <p>Promover o interesse pela análise crítica de questões sociais e econômicas.</p>
+                        </div>
+                        
+                        <div class="objetivo-card">
+                            <div class="objetivo-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <h4>Pesquisa Científica</h4>
+                            <p>Desenvolver a prática de pesquisa e análise de dados.</p>
+                        </div>
+                        
+                        <div class="objetivo-card">
+                            <div class="objetivo-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <h4>Oratória e Debate</h4>
+                            <p>Fortalecer as habilidades de oratória, debate e argumentação.</p>
+                        </div>
+                        
+                        <div class="objetivo-card">
+                            <div class="objetivo-icon">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            <h4>Intercâmbio</h4>
+                            <p>Fomentar o intercâmbio de conhecimento entre estudantes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="nefen-badge">
+                <i class="fas fa-university"></i>
+                <span>Promovido pelo <strong>NEFEN-UJC</strong> - Núcleo de Estudantes da Faculdade de Economia e Negócios</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Estrutura Section -->
+    <section class="section estrutura-section" id="estrutura">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Estrutura <span class="highlight">Organizacional</span></h2>
+                <p class="section-subtitle">Governança e gestão do CESE-UJC</p>
+            </div>
+            
+            <div class="organograma">
+                <!-- Nível 1: Conselho Administração -->
+                <div class="org-level nivel-1">
+                    <h3 class="org-level-title">Conselho de Administração</h3>
+                    <div class="org-cards">
+                        <div class="org-card pca-card">
+                            <div class="org-card-header">
+                                <h4>PCA</h4>
+                                <span class="org-badge">Máxima Governança</span>
+                            </div>
+                            <div class="org-card-body">
+                                <div class="org-avatar">
+                                    <i class="fas fa-user-tie"></i>
+                                </div>
+                                <h5>Cecília Mungoi</h5>
+                                <p>Presidente do Conselho de Administração</p>
+                                <p class="org-responsibility">Define visão estratégica e supervisiona atividades</p>
+                            </div>
+                        </div>
+                        
+                        <div class="org-card">
+                            <div class="org-card-header">
+                                <h4>Vice-PCA</h4>
+                                <span class="org-badge">Governança</span>
+                            </div>
+                            <div class="org-card-body">
+                                <div class="org-avatar">
+                                    <i class="fas fa-user-tie"></i>
+                                </div>
+                                <h5>Kelyussra Kumay</h5>
+                                <p>Vice-Presidente do Conselho</p>
+                                <p class="org-responsibility">Apoio à governança estratégica</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Linha de conexão -->
+                <div class="org-connection">
+                    <div class="org-line"></div>
+                </div>
+                
+                <!-- Nível 2: Diretoria Executiva -->
+                <div class="org-level nivel-2">
+                    <h3 class="org-level-title">Diretoria Executiva</h3>
+                    <div class="org-cards">
+                        <div class="org-card">
+                            <div class="org-card-header">
+                                <h4>CEO</h4>
+                                <span class="org-badge">Gestão Operacional</span>
+                            </div>
+                            <div class="org-card-body">
+                                <div class="org-avatar">
+                                    <i class="fas fa-briefcase"></i>
+                                </div>
+                                <h5>Bertil Muchanga</h5>
+                                <p>Chief Executive Officer</p>
+                                <p class="org-responsibility">Operações diárias e execução de projetos</p>
+                            </div>
+                        </div>
+                        
+                        <div class="org-card">
+                            <div class="org-card-header">
+                                <h4>CFO</h4>
+                                <span class="org-badge">Gestão Financeira</span>
+                            </div>
+                            <div class="org-card-body">
+                                <div class="org-avatar">
+                                    <i class="fas fa-coins"></i>
+                                </div>
+                                <h5>Clayton Ngovene</h5>
+                                <p>Chief Financial Officer</p>
+                                <p class="org-responsibility">Gestão financeira e patrocínios</p>
+                            </div>
+                        </div>
+                        
+                        <div class="org-card">
+                            <div class="org-card-header">
+                                <h4>COO</h4>
+                                <span class="org-badge">Operações</span>
+                            </div>
+                            <div class="org-card-body">
+                                <div class="org-avatar">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <h5>Sousa Nantide</h5>
+                                <p>Chief Operating Officer</p>
+                                <p class="org-responsibility">Logística e coordenação interna</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Linha de conexão -->
+                <div class="org-connection">
+                    <div class="org-line"></div>
+                </div>
+                
+                <!-- Nível 3: Diretorias de Área -->
+                <div class="org-level nivel-3">
+                    <h3 class="org-level-title">Diretorias de Área</h3>
+                    <div class="org-cards">
+                        <div class="org-card area-card">
+                            <div class="org-card-body">
+                                <div class="org-avatar">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <h5>Pesquisa e Análise</h5>
+                                <p>Produção científica e análise de dados</p>
+                            </div>
+                        </div>
+                        
+                        <div class="org-card area-card">
+                            <div class="org-card-body">
+                                <div class="org-avatar">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <h5>Fóruns e Engajamento</h5>
+                                <p>Organização de debates e eventos</p>
+                            </div>
+                        </div>
+                        
+                        <div class="org-card area-card">
+                            <div class="org-card-body">
+                                <div class="org-avatar">
+                                    <i class="fas fa-handshake"></i>
+                                </div>
+                                <h5>Relações Estratégicas</h5>
+                                <p>Parcerias e extensão universitária</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quotas Section -->
+    <section class="section quotas-section" id="quotas">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Sistema de <span class="highlight">Quotas</span></h2>
+                <p class="section-subtitle">Valores aprovados conforme Norma Financeira 01/2025</p>
+            </div>
+            
+            <div class="quotas-info">
+                <div class="quotas-text">
+                    <h3>Contribuição para a <span class="highlight">Autonomia</span> do Clube</h3>
+                    <p>As quotas são contribuições financeiras obrigatórias destinadas a assegurar a autonomia e o funcionamento do CESE, nomeadamente o financiamento de atividades, eventos e material de apoio.</p>
+                    
+                    <div class="payment-options">
+                        <div class="payment-option">
+                            <i class="fas fa-calendar-alt"></i>
+                            <div>
+                                <h4>Pagamento Mensal</h4>
+                                <p>Contribuição fracionada a cada mês de atividade. Vencimento: dia 16 de cada mês.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-option">
+                            <i class="fas fa-calendar-check"></i>
+                            <div>
+                                <h4>Pagamento Anual Único</h4>
+                                <p>Contribuição total do ano, efetuada até ao final do primeiro mês letivo.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>
+                            <h4>Atenção: Consequências de Inadimplência</h4>
+                            <p>O não pagamento de 2 quotas consecutivas ou 3 interpoladas resulta em suspensão dos direitos de voto, elegibilidade e participação em eventos exclusivos.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quotas-table-container">
+                    <div class="table-responsive">
+                        <table class="quotas-table">
+                            <thead>
+                                <tr>
+                                    <th>Escalão</th>
+                                    <th>Categoria</th>
+                                    <th>Responsabilidade</th>
+                                    <th>Quota Mensal</th>
+                                    <th>Quota Anual</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>I</td>
+                                    <td>Membro Participante</td>
+                                    <td>Baixa</td>
+                                    <td><strong>10 MT</strong></td>
+                                    <td><strong>120 MT</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>II</td>
+                                    <td>Membro de Equipa</td>
+                                    <td>Média</td>
+                                    <td><strong>20 MT</strong></td>
+                                    <td><strong>240 MT</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>III</td>
+                                    <td>Diretoria Executiva</td>
+                                    <td>Alta</td>
+                                    <td><strong>35 MT</strong></td>
+                                    <td><strong>420 MT</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>IV</td>
+                                    <td>Conselho Administração</td>
+                                    <td>Máxima</td>
+                                    <td><strong>50 MT</strong></td>
+                                    <td><strong>600 MT</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="table-note">
+                        <p><i class="fas fa-info-circle"></i> Os valores refletem o nível de responsabilidade e envolvimento hierárquico no clube.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Atividades Section -->
+    <section class="section atividades-section" id="atividades">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Nossas <span class="highlight">Atividades</span></h2>
+                <p class="section-subtitle">Engajamento acadêmico e desenvolvimento de competências</p>
+            </div>
+            
+            <div class="atividades-grid">
+                <div class="atividade-card">
+                    <div class="atividade-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Debates Mensais</h3>
+                    <p>Temas atuais como desigualdade, desemprego juvenil, inflação e sustentabilidade com formato estruturado de argumentação.</p>
+                </div>
+                
+                <div class="atividade-card">
+                    <div class="atividade-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3>Workshops de Oratória</h3>
+                    <p>Treinamentos práticos para desenvolver habilidades de comunicação, argumentação e apresentação em público.</p>
+                </div>
+                
+                <div class="atividade-card">
+                    <div class="atividade-icon">
+                        <i class="fas fa-globe-africa"></i>
+                    </div>
+                    <h3>Simulações de Conferências</h3>
+                    <p>Modelos tipo ONU econômica onde os estudantes representam países e debatem políticas econômicas globais.</p>
+                </div>
+                
+                <div class="atividade-card">
+                    <div class="atividade-icon">
+                        <i class="fas fa-microphone-alt"></i>
+                    </div>
+                    <h3>Produção de Conteúdo</h3>
+                    <p>Criação de podcasts, boletins informativos e artigos sobre temas sociais e econômicos relevantes.</p>
+                </div>
+                
+                <div class="atividade-card">
+                    <div class="atividade-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Parcerias Institucionais</h3>
+                    <p>Colaboração com outros clubes, instituições e especialistas para enriquecimento acadêmico mútuo.</p>
+                </div>
+                
+                <div class="atividade-card">
+                    <div class="atividade-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3>Produção Científica</h3>
+                    <p>Incentivo à pesquisa e publicação de artigos científicos sobre temas sociais e econômicos moçambicanos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calendário Section -->
+    <section class="section calendario-section" id="calendario">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Calendário de <span class="highlight">Eventos</span></h2>
+                <p class="section-subtitle">Programação 2026 - Em planeamento</p>
+            </div>
+            
+            <div class="calendario-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">
+                        <span class="timeline-month">FEV</span>
+                        <span class="timeline-year">2026</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>Debate Inaugural</h3>
+                        <p class="timeline-topic">"A desigualdade social em Moçambique: Desafios e Oportunidades"</p>
+                        <p class="timeline-desc">Evento de lançamento oficial do CESE-UJC com debate estruturado e participação de convidados especiais.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">
+                        <span class="timeline-month">MAR</span>
+                        <span class="timeline-year">2026</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>Mesa Redonda</h3>
+                        <p class="timeline-topic">"Juventude e Desemprego: Estratégias para o Futuro"</p>
+                        <p class="timeline-desc">Discussão com especialistas em recursos humanos, empreendedorismo e políticas públicas.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">
+                        <span class="timeline-month">ABR</span>
+                        <span class="timeline-year">2026</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>Debate Competitivo</h3>
+                        <p class="timeline-topic">"O Papel do Estado na Economia: Intervenção vs. Liberalismo"</p>
+                        <p class="timeline-desc">Competição entre equipes com júri especializado e premiação para os melhores debatedores.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">
+                        <span class="timeline-month">MAI</span>
+                        <span class="timeline-year">2026</span>
+                    </div>
+                    <div class="timeline-content">
+                        <h3>Seminário Internacional</h3>
+                        <p class="timeline-topic">"Globalização: Oportunidade ou Ameaça para Economias Emergentes?"</p>
+                        <p class="timeline-desc">Evento com participação virtual de estudantes de outras universidades africanas.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-placeholder">
+                    <div class="placeholder-content">
+                        <i class="fas fa-calendar-plus"></i>
+                        <h3>Mais Eventos em Planeamento</h3>
+                        <p>Estamos a preparar uma agenda completa de atividades para 2026. Fique atento!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Publicações Section -->
+    <section class="section publicacoes-section">
+        <div class="container">
+            <div class="publicacoes-banner">
+                <div class="banner-icon">
+                    <i class="fas fa-newspaper"></i>
+                </div>
+                <h2>Publicações Científicas</h2>
+                <p class="banner-subtitle">Em Breve - Primeiras publicações em 2026</p>
+                <p>O CESE-UJC está a preparar sua primeira revista estudantil, boletins informativos e artigos científicos resultantes dos debates e pesquisas realizadas.</p>
+                <div class="banner-cta">
+                    <a href="#contato" class="btn btn-outline">Seja um Colaborador</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacto Section -->
+    <section class="section contacto-section" id="contato">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Entre em <span class="highlight">Contacto</span></h2>
+                <p class="section-subtitle">Junte-se ao CESE-UJC e faça parte da mudança</p>
+            </div>
+            
+            <div class="contacto-content">
+                <div class="contacto-info">
+                    <h3>Informações de Contacto</h3>
+                    
+                    <div class="contacto-item">
+                        <div class="contacto-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h4>Email Oficial</h4>
+                            <a href="mailto:cese.ujc@gmail.com">cese.ujc@gmail.com</a>
+                        </div>
+                    </div>
+                    
+                    <div class="contacto-item">
+                        <div class="contacto-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div>
+                            <h4>Instituição</h4>
+                            <p>Universidade Joaquim Chissano (UJC)</p>
+                            <p>Faculdade de Economia e Negócios</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contacto-item">
+                        <div class="contacto-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div>
+                            <h4>Promoção</h4>
+                            <p>NEFEN-UJC - Núcleo de Estudantes da Faculdade de Economia e Negócios</p>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <h4>Siga-nos nas Redes Sociais</h4>
+                        <div class="social-icons">
+                            <a href="https://www.facebook.com/ceseujc" target="_blank" class="social-icon facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="https://www.instagram.com/cese_ujc?igsh=MWdic2hqY2FvbXd4cw==" target="_blank" class="social-icon instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="social-icon linkedin">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <a href="#" class="social-icon twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contacto-form">
+                    <h3>Formulário de Inscrição/Contacto</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Nome Completo *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Telemóvel</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="course">Curso/Faculdade</label>
+                            <input type="text" id="course" name="course" placeholder="Ex: Economia, Gestão, etc.">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="interest">Área de Interesse</label>
+                            <select id="interest" name="interest">
+                                <option value="">Selecione uma opção</option>
+                                <option value="debates">Debates e Oratória</option>
+                                <option value="pesquisa">Pesquisa Científica</option>
+                                <option value="eventos">Organização de Eventos</option>
+                                <option value="todos">Todas as Áreas</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Mensagem</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Conte-nos por que quer participar do CESE-UJC..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-paper-plane"></i> Enviar Inscrição
+                        </button>
+                        
+                        <p class="form-note">Entraremos em contacto em até 48 horas úteis.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="logo">
+                        <div class="logo-icon">📊</div>
+                        <div class="logo-text">
+                            <span class="logo-title">CESE</span>
+                            <span class="logo-subtitle">UJC</span>
+                        </div>
+                    </div>
+                    <p>Clube de Estudos Sociais e Econômicos</p>
+                    <p class="footer-nefen">Promovido por <strong>NEFEN-UJC</strong></p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Links Rápidos</h4>
+                    <ul>
+                        <li><a href="#sobre">Sobre o CESE</a></li>
+                        <li><a href="#estrutura">Estrutura</a></li>
+                        <li><a href="#quotas">Quotas</a></li>
+                        <li><a href="#atividades">Atividades</a></li>
+                        <li><a href="#contato">Participar</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h4>Contacto</h4>
+                    <p><i class="fas fa-envelope"></i> cese.ujc@gmail.com</p>
+                    <p><i class="fas fa-university"></i> Universidade Joaquim Chissano</p>
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com/ceseujc" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/cese_ujc?igsh=MWdic2hqY2FvbXd4cw==" target="_blank"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Clube de Estudos Sociais e Econômicos (CESE-UJC). Todos os direitos reservados.</p>
+                <p>Desenvolvido com paixão pela comunidade académica da UJC.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>
