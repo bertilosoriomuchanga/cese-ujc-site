@@ -6,14 +6,823 @@
     <title>💳 Registar Pagamento - CESE-UJC</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* (Usar o mesmo estilo do gerir-financas.html) */
-        /* Copiar todo o CSS do arquivo anterior e ajustar o conteúdo */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #1a3a8f;
+            --primary-dark: #0d2a6d;
+            --secondary: #2ecc71;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --border: #e1e5eb;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .logo-text h1 {
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        .logo-text p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 25px;
+            background: var(--light);
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 1px solid var(--border);
+        }
+        
+        .back-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .payment-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .card-header h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .card-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 58, 143, 0.1);
+        }
+        
+        .member-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            display: none;
+        }
+        
+        .member-info.show {
+            display: block;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .info-label {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .info-value {
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .method-card {
+            padding: 20px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .method-card:hover {
+            border-color: var(--primary);
+            background: rgba(26, 58, 143, 0.05);
+        }
+        
+        .method-card.selected {
+            border-color: var(--success);
+            background: rgba(46, 204, 113, 0.1);
+        }
+        
+        .method-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .method-card.selected .method-icon {
+            color: var(--success);
+        }
+        
+        .method-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 20px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid var(--border);
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 18px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(26, 58, 143, 0.2);
+        }
+        
+        .btn-secondary {
+            background: var(--light);
+            color: #555;
+            border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            color: var(--success);
+            margin-bottom: 20px;
+        }
+        
+        .success-message h3 {
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+        
+        .success-message p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        
+        .print-receipt {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            background: var(--light);
+            color: var(--primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+        
+        .print-receipt:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .payment-card {
+                padding: 25px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .back-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Estrutura similar mas focada só em registar pagamentos -->
-    <div class="main-content">
-        <!-- Conteúdo focado em formulário de pagamento -->
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">💳</div>
+                <div class="logo-text">
+                    <h1>CESE-UJC</h1>
+                    <p>Registar Pagamento</p>
+                </div>
+            </div>
+            <a href="gerir-financas.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Voltar à Gestão Financeira
+            </a>
+        </div>
+        
+        <div class="payment-card">
+            <div class="card-header">
+                <h2>💳 Registar Novo Pagamento</h2>
+                <p>Registe o pagamento de quotas de um membro</p>
+            </div>
+            
+            <div id="paymentForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="selectMembro"><i class="fas fa-user"></i> Selecionar Membro *</label>
+                        <select id="selectMembro" required onchange="carregarInfoMembro()">
+                            <option value="">Selecione um membro</option>
+                            <!-- Membros serão carregados via JS -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="valorPago"><i class="fas fa-money-bill-wave"></i> Valor Pago (MT) *</label>
+                        <input type="number" id="valorPago" min="5" step="5" required placeholder="Ex: 50">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mesReferencia"><i class="fas fa-calendar-alt"></i> Mês de Referência *</label>
+                        <select id="mesReferencia" required>
+                            <option value="2026-01">Janeiro 2026</option>
+                            <option value="2026-02">Fevereiro 2026</option>
+                            <option value="2026-03">Março 2026</option>
+                            <option value="2026-04">Abril 2026</option>
+                            <option value="2026-05">Maio 2026</option>
+                            <option value="2026-06">Junho 2026</option>
+                            <option value="2026-07">Julho 2026</option>
+                            <option value="2026-08">Agosto 2026</option>
+                            <option value="2026-09">Setembro 2026</option>
+                            <option value="2026-10">Outubro 2026</option>
+                            <option value="2026-11">Novembro 2026</option>
+                            <option value="2026-12">Dezembro 2026</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dataPagamento"><i class="fas fa-calendar-day"></i> Data do Pagamento *</label>
+                        <input type="date" id="dataPagamento" required>
+                    </div>
+                </div>
+                
+                <!-- Informações do Membro -->
+                <div class="member-info" id="memberInfo">
+                    <div class="info-row">
+                        <span class="info-label">Nome:</span>
+                        <span class="info-value" id="infoNome">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Nível:</span>
+                        <span class="info-value" id="infoNivel">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Quota Mensal:</span>
+                        <span class="info-value" id="infoQuota">- MT</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Status Atual:</span>
+                        <span class="info-value" id="infoStatus">-</span>
+                    </div>
+                </div>
+                
+                <!-- Métodos de Pagamento -->
+                <div class="form-group">
+                    <label><i class="fas fa-credit-card"></i> Método de Pagamento *</label>
+                    <div class="payment-methods">
+                        <div class="method-card" onclick="selecionarMetodo('mobile')">
+                            <div class="method-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="method-name">Mobile Money</div>
+                        </div>
+                        
+                        <div class="method-card" onclick="selecionarMetodo('dinheiro')">
+                            <div class="method-icon">
+                                <i class="fas fa-money-bill"></i>
+                            </div>
+                            <div class="method-name">Dinheiro</div>
+                        </div>
+                        
+                        <div class="method-card" onclick="selecionarMetodo('transferencia')">
+                            <div class="method-icon">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <div class="method-name">Transferência</div>
+                        </div>
+                        
+                        <div class="method-card" onclick="selecionarMetodo('outro')">
+                            <div class="method-icon">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </div>
+                            <div class="method-name">Outro</div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="metodoPagamento" required>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="comprovante"><i class="fas fa-receipt"></i> Nº Comprovante/Referência</label>
+                        <input type="text" id="comprovante" placeholder="Ex: Mpesa123456, Código de transação...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="responsavel"><i class="fas fa-user-check"></i> Responsável pelo Registo</label>
+                        <input type="text" id="responsavel" value="CFO CESE-UJC" readonly>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="observacoes"><i class="fas fa-sticky-note"></i> Observações</label>
+                    <textarea id="observacoes" rows="3" placeholder="Notas sobre o pagamento..."></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="limparFormulario()">
+                        <i class="fas fa-times"></i>
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="registarPagamento()">
+                        <i class="fas fa-check"></i>
+                        Confirmar Pagamento
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mensagem de Sucesso -->
+            <div class="success-message" id="successMessage">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Pagamento Registado com Sucesso!</h3>
+                <p>O pagamento foi registado no sistema. Um comprovante foi gerado.</p>
+                
+                <div class="receipt-info" style="text-align: left; background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 30px 0;">
+                    <h4 style="color: var(--primary); margin-bottom: 15px;">📋 Comprovante de Pagamento</h4>
+                    <div class="info-row">
+                        <span class="info-label">Membro:</span>
+                        <span class="info-value" id="receiptNome">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Valor:</span>
+                        <span class="info-value" id="receiptValor">- MT</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Mês:</span>
+                        <span class="info-value" id="receiptMes">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Data:</span>
+                        <span class="info-value" id="receiptData">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Método:</span>
+                        <span class="info-value" id="receiptMetodo">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Comprovante:</span>
+                        <span class="info-value" id="receiptComprovante">-</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <a href="#" class="print-receipt" onclick="imprimirComprovante()">
+                        <i class="fas fa-print"></i>
+                        Imprimir Comprovante
+                    </a>
+                    <a href="gerir-financas.html" class="print-receipt" style="margin-left: 10px;">
+                        <i class="fas fa-list"></i>
+                        Ver Todos os Pagamentos
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // Dados
+        const MEMBROS_KEY = 'cese_membros';
+        const PAGAMENTOS_KEY = 'cese_pagamentos';
+        let membros = [];
+        let metodoSelecionado = '';
+        
+        // Carregar dados
+        function carregarDados() {
+            // Carregar membros
+            const membrosSalvos = localStorage.getItem(MEMBROS_KEY);
+            if (membrosSalvos) {
+                membros = JSON.parse(membrosSalvos);
+            }
+            
+            // Preencher select de membros
+            const select = document.getElementById('selectMembro');
+            select.innerHTML = '<option value="">Selecione um membro</option>';
+            
+            membros.forEach(membro => {
+                const option = document.createElement('option');
+                option.value = membro.id;
+                option.textContent = `${membro.nome} - ${membro.quotaMensal} MT`;
+                select.appendChild(option);
+            });
+            
+            // Definir data atual
+            document.getElementById('dataPagamento').valueAsDate = new Date();
+            
+            // Definir mês atual como padrão
+            const hoje = new Date();
+            const mesAtual = hoje.getMonth() + 1;
+            const anoAtual = hoje.getFullYear();
+            const mesPadrao = `${anoAtual}-${mesAtual.toString().padStart(2, '0')}`;
+            document.getElementById('mesReferencia').value = mesPadrao;
+        }
+        
+        // Carregar informações do membro selecionado
+        function carregarInfoMembro() {
+            const membroId = parseInt(document.getElementById('selectMembro').value);
+            const membro = membros.find(m => m.id === membroId);
+            
+            const infoDiv = document.getElementById('memberInfo');
+            
+            if (membro) {
+                infoDiv.classList.add('show');
+                
+                document.getElementById('infoNome').textContent = membro.nome;
+                document.getElementById('infoNivel').textContent = getNivelTexto(membro.nivel);
+                document.getElementById('infoQuota').textContent = `${membro.quotaMensal} MT`;
+                document.getElementById('infoStatus').textContent = membro.quotaStatus === 'paid' ? 'Em Dia' : 'Pendente';
+                
+                // Preencher valor automático
+                document.getElementById('valorPago').value = membro.quotaMensal;
+            } else {
+                infoDiv.classList.remove('show');
+            }
+        }
+        
+        // Selecionar método de pagamento
+        function selecionarMetodo(metodo) {
+            metodoSelecionado = metodo;
+            
+            // Remover selected de todos
+            document.querySelectorAll('.method-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Adicionar selected ao clicado
+            const card = event.target.closest('.method-card');
+            if (card) {
+                card.classList.add('selected');
+            }
+            
+            document.getElementById('metodoPagamento').value = metodo;
+        }
+        
+        // Registar pagamento
+        function registarPagamento() {
+            // Validar formulário
+            if (!validarFormulario()) {
+                return;
+            }
+            
+            const membroId = parseInt(document.getElementById('selectMembro').value);
+            const membro = membros.find(m => m.id === membroId);
+            
+            // Criar objeto de pagamento
+            const pagamento = {
+                id: Date.now(),
+                membroId: membroId,
+                membroNome: membro.nome,
+                valor: parseInt(document.getElementById('valorPago').value),
+                mes: document.getElementById('mesReferencia').value,
+                data: document.getElementById('dataPagamento').value,
+                metodo: metodoSelecionado,
+                comprovante: document.getElementById('comprovante').value,
+                observacoes: document.getElementById('observacoes').value,
+                responsavel: document.getElementById('responsavel').value,
+                status: 'paid',
+                dataRegistro: new Date().toISOString()
+            };
+            
+            // Salvar pagamento
+            const pagamentosSalvos = localStorage.getItem(PAGAMENTOS_KEY);
+            let pagamentos = pagamentosSalvos ? JSON.parse(pagamentosSalvos) : [];
+            pagamentos.push(pagamento);
+            localStorage.setItem(PAGAMENTOS_KEY, JSON.stringify(pagamentos));
+            
+            // Atualizar status do membro
+            if (membro) {
+                membro.quotaStatus = 'paid';
+                localStorage.setItem(MEMBROS_KEY, JSON.stringify(membros));
+            }
+            
+            // Mostrar mensagem de sucesso
+            mostrarComprovante(pagamento, membro);
+        }
+        
+        // Mostrar comprovante
+        function mostrarComprovante(pagamento, membro) {
+            // Preencher dados do comprovante
+            document.getElementById('receiptNome').textContent = pagamento.membroNome;
+            document.getElementById('receiptValor').textContent = `${pagamento.valor} MT`;
+            document.getElementById('receiptMes').textContent = formatarMes(pagamento.mes);
+            document.getElementById('receiptData').textContent = formatarData(pagamento.data);
+            document.getElementById('receiptMetodo').textContent = getMetodoTexto(pagamento.metodo);
+            document.getElementById('receiptComprovante').textContent = pagamento.comprovante || 'N/A';
+            
+            // Mostrar mensagem de sucesso
+            document.getElementById('paymentForm').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+        }
+        
+        // Imprimir comprovante
+        function imprimirComprovante() {
+            const conteudo = `
+                <html>
+                <head>
+                    <title>Comprovante CESE-UJC</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        .header { text-align: center; margin-bottom: 30px; }
+                        .receipt { border: 2px solid #333; padding: 20px; border-radius: 10px; }
+                        .receipt h2 { color: #1a3a8f; }
+                        .info-row { display: flex; justify-content: space-between; margin: 10px 0; }
+                        .footer { margin-top: 30px; text-align: center; font-size: 12px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>📋 CESE-UJC</h1>
+                        <h3>Comprovante de Pagamento</h3>
+                    </div>
+                    
+                    <div class="receipt">
+                        <div class="info-row">
+                            <strong>Membro:</strong>
+                            <span>${document.getElementById('receiptNome').textContent}</span>
+                        </div>
+                        <div class="info-row">
+                            <strong>Valor:</strong>
+                            <span>${document.getElementById('receiptValor').textContent}</span>
+                        </div>
+                        <div class="info-row">
+                            <strong>Mês Referência:</strong>
+                            <span>${document.getElementById('receiptMes').textContent}</span>
+                        </div>
+                        <div class="info-row">
+                            <strong>Data Pagamento:</strong>
+                            <span>${document.getElementById('receiptData').textContent}</span>
+                        </div>
+                        <div class="info-row">
+                            <strong>Método:</strong>
+                            <span>${document.getElementById('receiptMetodo').textContent}</span>
+                        </div>
+                        <div class="info-row">
+                            <strong>Comprovante:</strong>
+                            <span>${document.getElementById('receiptComprovante').textContent}</span>
+                        </div>
+                        <hr style="margin: 20px 0;">
+                        <div class="info-row">
+                            <strong>Data de Emissão:</strong>
+                            <span>${new Date().toLocaleDateString('pt-MZ')}</span>
+                        </div>
+                        <div class="info-row">
+                            <strong>Responsável:</strong>
+                            <span>CFO CESE-UJC</span>
+                        </div>
+                    </div>
+                    
+                    <div class="footer">
+                        <p>CESE-UJC - Clube de Estudos Sociais e Econômicos</p>
+                        <p>Universidade Joaquim Chissano | NEFEN-UJC</p>
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            const janela = window.open('', '_blank');
+            janela.document.write(conteudo);
+            janela.document.close();
+            janela.print();
+        }
+        
+        // Limpar formulário
+        function limparFormulario() {
+            document.getElementById('paymentForm').reset();
+            document.getElementById('memberInfo').classList.remove('show');
+            document.querySelectorAll('.method-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            metodoSelecionado = '';
+            document.getElementById('metodoPagamento').value = '';
+            document.getElementById('dataPagamento').valueAsDate = new Date();
+        }
+        
+        // Validar formulário
+        function validarFormulario() {
+            const membro = document.getElementById('selectMembro').value;
+            const valor = document.getElementById('valorPago').value;
+            const data = document.getElementById('dataPagamento').value;
+            const metodo = document.getElementById('metodoPagamento').value;
+            
+            if (!membro) {
+                alert('Por favor, selecione um membro.');
+                return false;
+            }
+            
+            if (!valor || valor < 5) {
+                alert('Por favor, insira um valor válido (mínimo 5 MT).');
+                return false;
+            }
+            
+            if (!data) {
+                alert('Por favor, selecione uma data.');
+                return false;
+            }
+            
+            if (!metodo) {
+                alert('Por favor, selecione um método de pagamento.');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Funções auxiliares
+        function getNivelTexto(nivel) {
+            switch(nivel) {
+                case 'admin': return 'Administrador';
+                case 'cfo': return 'CFO';
+                default: return 'Membro';
+            }
+        }
+        
+        function getMetodoTexto(metodo) {
+            switch(metodo) {
+                case 'mobile': return 'Mobile Money';
+                case 'dinheiro': return 'Dinheiro';
+                case 'transferencia': return 'Transferência Bancária';
+                default: return 'Outro';
+            }
+        }
+        
+        function formatarData(dataStr) {
+            const data = new Date(dataStr);
+            return data.toLocaleDateString('pt-MZ');
+        }
+        
+        function formatarMes(mesStr) {
+            const [ano, mes] = mesStr.split('-');
+            const meses = [
+                'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+            ];
+            return `${meses[parseInt(mes) - 1]} ${ano}`;
+        }
+        
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', carregarDados);
+    </script>
 </body>
 </html>
